@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from ...Emulator import Emulator
     from ...types import HotkeysContext
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 class LibretroGenerator(Generator):
 
@@ -47,7 +47,7 @@ class LibretroGenerator(Generator):
         return {
             "name": "retroarch",
             "keys": { "exit": ["KEY_LEFTSHIFT", "KEY_ESC"], "menu": ["KEY_LEFTSHIFT", "KEY_F1"], "pause": ["KEY_LEFTSHIFT", "KEY_F1"], "coin": "KEY_F12",
-                      "save_state": ["KEY_LEFTSHIFT", "KEY_F3"], "restore_state": ["KEY_LEFTSHIFT", "KEY_F4"], "previous_slot": ["KEY_LEFTSHIFT", "KEY_F6"], "next_slot": ["KEY_LEFTSHIFT", "KEY_F5"]
+                      "save_state": ["KEY_LEFTSHIFT", "KEY_F3"], "restore_state": ["KEY_LEFTSHIFT", "KEY_F4"], "next_slot": ["KEY_LEFTSHIFT", "KEY_F6"], "previous_slot": ["KEY_LEFTSHIFT", "KEY_F5"]
                      }
         }
 
@@ -81,10 +81,10 @@ class LibretroGenerator(Generator):
                 shaderFilename = f"{gameShader}.slangp"
             else:
                 shaderFilename = f"{gameShader}.glslp"
-            _logger.debug("searching shader %s", shaderFilename)
+            eslog.debug(f"searching shader {shaderFilename}")
             if (USER_SHADERS / shaderFilename).exists():
                 video_shader_dir = USER_SHADERS
-                _logger.debug("shader %s found in %s", shaderFilename, USER_SHADERS)
+                eslog.debug(f"shader {shaderFilename} found in {USER_SHADERS}")
             else:
                 video_shader_dir = BATOCERA_SHADERS
             video_shader = video_shader_dir / shaderFilename
@@ -275,7 +275,7 @@ class LibretroGenerator(Generator):
                 first_line = file.readline().strip()
             # creating the new 'rom_path' variable by combining the directory path and the first line
             rom_path = rom_path.parent / first_line
-            _logger.debug("New rom path: %s", rom_path)
+            eslog.debug(f"New rom path: {rom_path}")
             # choose core based on new rom directory
             directory_parts = rom_path.parent.parts
             if "d3xp" in directory_parts:
@@ -304,7 +304,7 @@ class LibretroGenerator(Generator):
                     os.chdir(romdir / assetdir)
                 os.chdir(romdir)
             except FileNotFoundError:
-                _logger.error("ERROR: Game assets not installed. You can get them from the Batocera Content Downloader.")
+                eslog.error("ERROR: Game assets not installed. You can get them from the Batocera Content Downloader.")
                 raise
 
             commandArray = [RETROARCH_BIN, "-L", retroarchCore, "--config", system.config['configfile']]
@@ -373,6 +373,11 @@ class LibretroGenerator(Generator):
                 first_line = file.readline().strip()
             rom_path = rom_path.parent / first_line
 
+        if system.name == 'openlara':
+            with rom_path.open() as file:
+                first_line = file.readline().strip()
+            rom_path = rom_path.parent / first_line
+
         # Use command line instead of ROM file for MAME variants
         if system.config['core'] in [ 'mame', 'mess', 'mamevirtual', 'same_cdi' ]:
             dontAppendROM = True
@@ -430,7 +435,7 @@ def getGFXBackend(system: Emulator) -> str:
             core = system.config['core']
             if backend == "gl" and core in [ 'kronos', 'citra', 'mupen64plus-next', 'melonds', 'beetle-psx-hw' ]:
                 backend = "glcore"
-            if backend == "glcore" and core in [ 'parallel_n64', 'yabasanshiro', 'boom3' ]:
+            if backend == "glcore" and core in [ 'parallel_n64', 'yabasanshiro', 'openlara', 'boom3' ]:
                 backend = "gl"
 
         return backend

@@ -17,7 +17,7 @@ class MugenGenerator(Generator):
     def getHotkeysContext(self) -> HotkeysContext:
         return {
             "name": "mugen",
-            "keys": {"exit": ["/usr/bin/batocera-wine mugen stop"]}
+            "keys": {"exit": ["KEY_ESC"]}
         }
 
     def generate(self, system, rom, playersControllers, metadata, guns, wheels, gameResolution):

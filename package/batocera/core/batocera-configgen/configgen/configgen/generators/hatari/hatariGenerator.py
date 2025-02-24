@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Final
 
@@ -12,7 +13,7 @@ from ..Generator import Generator
 if TYPE_CHECKING:
     from ...types import HotkeysContext
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 # libretro generator uses this, so it needs to be public
 HATARI_CONFIG: Final = CONFIGS / "hatari"
@@ -73,7 +74,7 @@ class HatariGenerator(Generator):
 
         commandArray += ["--machine", machine]
         tos = HatariGenerator.findBestTos(BIOS, machine, tosversion, toslang)
-        commandArray += [ "--tos", tos]
+        commandArray += [ "--tos", BIOS / tos]
 
         # RAM (ST Ram) options (0 for 512k, 1 for 1MB)
         memorysize = 0
@@ -122,7 +123,7 @@ class HatariGenerator(Generator):
         # pads
         # disable previous configuration
         for i in range(1, 6): # 1 to 5 included
-            section = f"Joystick{i}"
+            section = "Joystick" + str(i)
             if config.has_section(section):
                 config.set(section, "nJoyId", "-1")
                 config.set(section, "nJoystickMode", "0")
@@ -130,7 +131,7 @@ class HatariGenerator(Generator):
         nplayer = 1
         for playercontroller, pad in sorted(playersControllers.items()):
             if nplayer <= 5:
-                section = f"Joystick{nplayer}"
+                section = "Joystick" + str(nplayer)
                 if not config.has_section(section):
                     config.add_section(section)
                 config.set(section, "nJoyId", str(pad.index))
@@ -167,7 +168,7 @@ class HatariGenerator(Generator):
             config.write(configfile)
 
     @staticmethod
-    def findBestTos(biosdir: Path, machine: str, tos_version: str, language: str, /) -> Path:
+    def findBestTos(biosdir: Path, machine, tos_version, language) -> str:
         # all languages by preference, when value is "auto"
         all_languages = ["us", "uk", "de", "es", "fr", "it", "nl", "ru", "se", ""]
 
@@ -195,11 +196,11 @@ class HatariGenerator(Generator):
                         biosversion = v_tos_version
                     else:
                         biosversion = f"tos{v_tos_version}"
-                    tos_path = biosdir / f"{biosversion}{v_language}.img"
-                    if tos_path.exists():
-                        _logger.debug("tos filename: %s", tos_path.name)
-                        return tos_path
+                    filename = f"{biosversion}{v_language}.img"
+                    if os.path.exists(f"{biosdir}/{filename}"):
+                        eslog.debug(f"tos filename: {filename}")
+                        return filename
                     else:
-                        _logger.warning("tos filename %s not found", tos_path.name)
+                        eslog.warning(f"tos filename {filename} not found")
 
         raise Exception(f"no bios found for machine {machine}")

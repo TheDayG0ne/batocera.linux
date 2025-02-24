@@ -20,7 +20,7 @@ from ..Generator import Generator
 if TYPE_CHECKING:
     from ...types import HotkeysContext
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 class XeniaGenerator(Generator):
 
@@ -55,19 +55,19 @@ class XeniaGenerator(Generator):
 
         # check Vulkan first before doing anything
         if vulkan.is_available():
-            _logger.debug("Vulkan driver is available on the system.")
+            eslog.debug("Vulkan driver is available on the system.")
             vulkan_version = vulkan.get_version()
             if vulkan_version > "1.3":
-                _logger.debug("Using Vulkan version: %s", vulkan_version)
+                eslog.debug("Using Vulkan version: {}".format(vulkan_version))
             else:
                 if system.isOptSet('xenia_api') and system.config['xenia_api'] == "D3D12":
-                    _logger.debug("Vulkan version: %s is not compatible with Xenia when using D3D12", vulkan_version)
-                    _logger.debug("You may have performance & graphical errors, switching to native Vulkan")
+                    eslog.debug("Vulkan version: {} is not compatible with Xenia when using D3D12".format(vulkan_version))
+                    eslog.debug("You may have performance & graphical errors, switching to native Vulkan".format(vulkan_version))
                     system.config['xenia_api'] = "Vulkan"
                 else:
-                    _logger.debug("Vulkan version: %s is not recommended with Xenia", vulkan_version)
+                    eslog.debug("Vulkan version: {} is not recommended with Xenia".format(vulkan_version))
         else:
-            _logger.debug("*** Vulkan driver required is not available on the system!!! ***")
+            eslog.debug("*** Vulkan driver required is not available on the system!!! ***")
             sys.exit()
 
         # set to 64bit environment by default
@@ -116,7 +116,7 @@ class XeniaGenerator(Generator):
                     dest_path.unlink()
                 dest_path.symlink_to(src_path)
         except Exception as e:
-            _logger.debug("Error creating 64-bit link for %s: %s", dll, e)
+            eslog.debug(f"Error creating 64-bit link for {dll}: {e}")
 
         # Create symbolic links for 32-bit DLLs
         try:
@@ -128,25 +128,25 @@ class XeniaGenerator(Generator):
                     dest_path.unlink()
                 dest_path.symlink_to(src_path)
         except Exception as e:
-            _logger.debug("Error creating 32-bit link for %s: %s", dll, e)
+            eslog.debug(f"Error creating 32-bit link for {dll}: {e}")
 
         # are we loading a digital title?
         if rom_path.suffix == '.xbox360':
-            _logger.debug('Found .xbox360 playlist: %s', rom)
+            eslog.debug(f'Found .xbox360 playlist: {rom}')
             pathLead = rom_path.parent
             with rom_path.open() as openFile:
                 # Read only the first line of the file.
                 firstLine = openFile.readlines(1)[0]
                 # Strip of any new line characters.
                 firstLine = firstLine.strip('\n').strip('\r')
-                _logger.debug('Checking if specified disc installation / XBLA file actually exists...')
+                eslog.debug(f'Checking if specified disc installation / XBLA file actually exists...')
                 xblaFullPath = pathLead / firstLine
                 if xblaFullPath.exists():
-                    _logger.debug('Found! Switching active rom to: %s', firstLine)
+                    eslog.debug(f'Found! Switching active rom to: {firstLine}')
                     rom_path = xblaFullPath
                     rom = str(xblaFullPath)
                 else:
-                    _logger.error('Disc installation/XBLA title %s from %s not found, check path or filename.', firstLine, rom)
+                    eslog.error(f'Disc installation/XBLA title {firstLine} from {rom} not found, check path or filename.')
 
         # adjust the config toml file accordingly
         config = {}
@@ -308,7 +308,7 @@ class XeniaGenerator(Generator):
             matching_files = [file_path for file_path in (canarypath / 'patches').glob(f'*{rom_name}*.patch.toml') if re.search(rom_name, file_path.name, re.IGNORECASE)]
             if matching_files:
                 for file_path in matching_files:
-                    _logger.debug('Enabling patches for: %s', file_path)
+                    eslog.debug(f'Enabling patches for: {file_path}')
                     # load the matchig .patch.toml file
                     with file_path.open('r') as f:
                         patch_toml = toml.load(f)
@@ -320,7 +320,7 @@ class XeniaGenerator(Generator):
                     with file_path.open('w') as f:
                         toml.dump(patch_toml, f)
             else:
-                _logger.debug('No patch file found for %s', rom_name)
+                eslog.debug(f'No patch file found for {rom_name}')
 
         # now setup the command array for the emulator
         if rom == 'config':
@@ -330,9 +330,9 @@ class XeniaGenerator(Generator):
                 commandArray = [wine.WINE64, emupath / 'xenia.exe']
         else:
             if core == 'xenia-canary':
-                commandArray = [wine.WINE64, canarypath / 'xenia_canary.exe', f'z:{rom}']
+                commandArray = [wine.WINE64, canarypath / 'xenia_canary.exe', 'z:' + rom]
             else:
-                commandArray = [wine.WINE64, emupath / 'xenia.exe', f'z:{rom}']
+                commandArray = [wine.WINE64, emupath / 'xenia.exe', 'z:' + rom]
 
         environment = wine.get_wine_environment(wineprefix)
         environment.update({

@@ -6,7 +6,6 @@ import os
 import re
 import signal
 import subprocess
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 import evdev
@@ -15,12 +14,13 @@ from .. import controllersConfig
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
+    from pathlib import Path
 
     from ..controller import ControllerDict, ControllerMapping
     from ..Emulator import Emulator
     from ..types import DeviceInfoDict, DeviceInfoMapping
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 wheelMapping = {
     "wheel":      "joystick1left",
@@ -104,14 +104,13 @@ emulatorMapping = {
     },
 }
 
-
 def reconfigureControllers(playersControllers: ControllerMapping, system: Emulator, rom: str | Path, metadata: dict[str, str], deviceList: DeviceInfoDict) -> tuple[list[subprocess.Popen[bytes]], ControllerDict, DeviceInfoDict]:
-    _logger.info("wheels reconfiguration")
+    eslog.info("wheels reconfiguration")
     wheelsmetadata = None
 
-    _logger.info("before wheel reconfiguration :")
+    eslog.info("before wheel reconfiguration :")
     for playercontroller, pad in sorted(playersControllers.items()):
-        _logger.info("  %s. index:%s dev:%s name:%s", playercontroller, pad.index, pad.device_path, pad.real_name)
+        eslog.info(f"  {playercontroller}. index:{pad.index!s} dev:{pad.device_path} name:{pad.real_name}")
 
     # reconfigure wheel buttons
     # no need to sort, but i like keeping the same loop (sorted by players)
@@ -119,7 +118,7 @@ def reconfigureControllers(playersControllers: ControllerMapping, system: Emulat
     for playercontroller, pad in sorted(playersControllers.items()):
         if pad.device_path in deviceList:
             if deviceList[pad.device_path]["isWheel"]:
-                _logger.info("Wheel reconfiguration for pad %s", pad.real_name)
+                eslog.info(f"Wheel reconfiguration for pad {pad.real_name}")
                 originalInputs = pad.inputs.copy()
 
                 # erase target keys
@@ -131,7 +130,7 @@ def reconfigureControllers(playersControllers: ControllerMapping, system: Emulat
                                 wheelkey  = wheelMapping[shortmd]
                                 if wheelkey in playersControllers[playercontroller].inputs:
                                     del playersControllers[playercontroller].inputs[wheelkey]
-                                    _logger.info("wheel: erase the key %s", wheelkey)
+                                    eslog.info(f"wheel: erase the key {wheelkey}")
 
                 # fill with the wanted keys
                 for md in metadata:
@@ -145,9 +144,9 @@ def reconfigureControllers(playersControllers: ControllerMapping, system: Emulat
                                 if wheelkey in originalInputs:
                                     playersControllers[playercontroller].inputs[wantedkey] = originalInputs[wheelkey]
                                     playersControllers[playercontroller].inputs[wantedkey].name = wantedkey
-                                    _logger.info("wheel: fill key %s with %s", wantedkey, wheelkey)
+                                    eslog.info(f"wheel: fill key {wantedkey} with {wheelkey}")
                                 else:
-                                    _logger.info("wheel: unable to replace %s with %s", wantedkey, wheelkey)
+                                    eslog.info(f"wheel: unable to replace {wantedkey} with {wheelkey}")
         nplayer += 1
 
     # reconfigure wheel min/max/deadzone
@@ -177,19 +176,12 @@ def reconfigureControllers(playersControllers: ControllerMapping, system: Emulat
             if "wheel_midzone" in system.config:
                 wanted_midzone = int(system.config["wheel_midzone"])
 
-            _logger.info("wheel rotation angle is %s ; wanted wheel rotation angle is %s ; wanted deadzone is %s ; wanted midzone is %s", ra, wanted_ra, wanted_deadzone, wanted_midzone)
-
-            #try to write range directly in physical wheel if the driver supports it
-            range_path = Path(device['sysfs_path']) / "range"
-            if os.access(range_path, os.F_OK | os.R_OK | os.W_OK):
-                range_path.write_text(str(wanted_ra))
-                ra = wanted_ra
-
+            eslog.info("wheel rotation angle is " + str(ra) + " ; wanted wheel rotation angle is " + str(wanted_ra) + " ; wanted deadzone is " + str(wanted_deadzone) + " ; wanted midzone is " + str(wanted_midzone))
             # no need new device in some cases
             if wanted_ra < ra or wanted_deadzone > 0:
                 (newdev, p) = reconfigureAngleRotation(pad.device_path, int(pad.inputs["joystick1left"].id), ra, wanted_ra, wanted_deadzone, wanted_midzone)
                 if newdev is not None:
-                    _logger.info("replacing device %s by device %s for player %s", pad.device_path, newdev, playercontroller)
+                    eslog.info(f"replacing device {pad.device_path} by device {newdev} for player {playercontroller}")
                     deviceList[newdev] = device.copy()
                     deviceList[newdev]["eventId"] = controllersConfig.dev2int(newdev)
                     pad.physical_device_path = pad.device_path # save the physical device for ffb
@@ -222,7 +214,7 @@ def reconfigureControllers(playersControllers: ControllerMapping, system: Emulat
                 deviceList[pad.device_path]["joystick_index"] = joystick_index
         # fill physical_index
         for _, pad in sorted(playersControllers.items()):
-            if pad.physical_device_path is not None and pad.physical_device_path in deviceList and deviceList[pad.physical_device_path]["joystick_index"] is not None:
+            if pad.physical_device_path is not None and pad.physical_device_path in deviceList and "joystick_index" in deviceList[pad.physical_device_path]:
                 pad.physical_index = deviceList[pad.physical_device_path]["joystick_index"] # save the physical device for ffb
 
     # reorder players to priorize wheel pads
@@ -237,9 +229,9 @@ def reconfigureControllers(playersControllers: ControllerMapping, system: Emulat
             playersControllersNew[nplayer] = pad.replace(player_number=nplayer)
             nplayer += 1
 
-    _logger.info("after wheel reconfiguration :")
+    eslog.info("after wheel reconfiguration :")
     for playercontroller, pad in sorted(playersControllersNew.items()):
-        _logger.info("  %s. index:%s dev:%s name:%s", playercontroller, pad.index, pad.device_path, pad.real_name)
+        eslog.info(f"  {playercontroller}. index:{pad.index!s} dev:{pad.device_path} name:{pad.real_name}")
 
     return (procs, playersControllersNew, deviceList)
 
@@ -258,7 +250,7 @@ def reconfigureAngleRotation(dev: str, wheelAxis: int, rotationAngle: int, wante
             absmax = absinfo.max
 
     if absmin is None or absmax is None:
-        _logger.warning("unable to get min/max of %s", dev)
+        eslog.warning("unable to get min/max of " + dev)
         return (None, None)
 
     totalRange = absmax - absmin
@@ -283,7 +275,7 @@ def reconfigureAngleRotation(dev: str, wheelAxis: int, rotationAngle: int, wante
 
     pipeout, pipein = os.pipe()
     cmd = ["batocera-wheel-calibrator", "-d", dev, "-a", str(wheelAxis), "-m", str(newmin), "-M", str(newmax), "-z", str(newdz), "-c", str(newmz)]
-    _logger.info(cmd)
+    eslog.info(cmd)
     proc = subprocess.Popen(cmd, stdout=pipein, stderr=subprocess.PIPE)
     try:
         fd = os.fdopen(pipeout)
@@ -298,6 +290,6 @@ def reconfigureAngleRotation(dev: str, wheelAxis: int, rotationAngle: int, wante
 
 def resetControllers(wheelProcesses: Iterable[subprocess.Popen[bytes]]) -> None:
     for p in wheelProcesses:
-        _logger.info("killing wheel process %s", p.pid)
+        eslog.info(f"killing wheel process {p.pid}")
         os.kill(p.pid, signal.SIGTERM)
         out, err = p.communicate()

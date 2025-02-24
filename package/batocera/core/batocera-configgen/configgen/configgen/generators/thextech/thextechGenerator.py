@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Final
 
 from ... import Command
@@ -8,6 +9,8 @@ from ..Generator import Generator
 
 if TYPE_CHECKING:
     from ...types import HotkeysContext
+
+eslog = logging.getLogger(__name__)
 
 _THEXTECH_SAVES: Final = SAVES / "thextech"
 

@@ -5,9 +5,8 @@ from os import environ
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from ... import Command
+from ... import Command, controllersConfig
 from ...batoceraPaths import CACHE, CONFIGS, SAVES, mkdir_if_not_exists
-from ...gun import guns_need_crosses
 from ...utils import vulkan
 from ...utils.configparser import CaseSensitiveConfigParser
 from ..Generator import Generator
@@ -25,7 +24,7 @@ from .dolphinPaths import (
 if TYPE_CHECKING:
     from ...types import HotkeysContext
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 class DolphinGenerator(Generator):
 
@@ -150,7 +149,7 @@ class DolphinGenerator(Generator):
             dolphinSettings.set("Core", "GFXBackend", "Vulkan")
             # Check Vulkan
             if not vulkan.is_available():
-                _logger.debug("Vulkan driver is not available on the system. Using OpenGL instead.")
+                eslog.debug("Vulkan driver is not available on the system. Using OpenGL instead.")
                 dolphinSettings.set("Core", "GFXBackend", "OGL")
         else:
             dolphinSettings.set("Core", "GFXBackend", "OGL")
@@ -165,22 +164,22 @@ class DolphinGenerator(Generator):
         # Gamecube ports
         # Create a for loop going 1 through to 4 and iterate through it:
         for i in range(1, 5):
-            key = f"dolphin_port_{i}_type"
+            key = "dolphin_port_" + str(i) + "_type"
             if system.isOptSet(key):
                 value = system.config[key]
                 # Set value to 6 if it is 6a or 6b. This is to differentiate between Standard Controller and GameCube Controller type.
                 value = "6" if value in ["6a", "6b"] else value
                 # Sub in the appropriate values from es_features, accounting for the 1 integer difference.
-                dolphinSettings.set("Core", f"SIDevice{i - 1}", value)
+                dolphinSettings.set("Core", "SIDevice" + str(i - 1), value)
             else:
                 # if the pad is a wheel and on gamecube, use it
                 if system.name == "gamecube" and system.isOptSet('use_wheels') and system.getOptBoolean('use_wheels') and len(wheels) > 0 and i in playersControllers and playersControllers[i].device_path in wheels:
-                    dolphinSettings.set("Core", f"SIDevice{i - 1}", "8")
+                    dolphinSettings.set("Core", "SIDevice" + str(i - 1), "8")
                 else:
-                    dolphinSettings.set("Core", f"SIDevice{i - 1}", "6")
+                    dolphinSettings.set("Core", "SIDevice" + str(i - 1), "6")
 
         # HiResTextures for guns part 1/2 (see below the part 2)
-        if system.isOptSet('use_guns') and system.getOptBoolean('use_guns') and len(guns) > 0 and ((system.isOptSet('dolphin-lightgun-hide-crosshair') == False and guns_need_crosses(guns) == False) or system.getOptBoolean('dolphin-lightgun-hide-crosshair') == True):
+        if system.isOptSet('use_guns') and system.getOptBoolean('use_guns') and len(guns) > 0 and ((system.isOptSet('dolphin-lightgun-hide-crosshair') == False and controllersConfig.gunsNeedCrosses(guns) == False) or system.getOptBoolean('dolphin-lightgun-hide-crosshair') == True):
             dolphinSettings.set("General", "CustomTexturesPath", "/usr/share/DolphinCrosshairsPack")
         else:
             dolphinSettings.remove_option("General", "CustomTexturesPath")
@@ -233,17 +232,17 @@ class DolphinGenerator(Generator):
 
         # Set Vulkan adapter
         if vulkan.is_available():
-            _logger.debug("Vulkan driver is available on the system.")
+            eslog.debug("Vulkan driver is available on the system.")
             if vulkan.has_discrete_gpu():
-                _logger.debug("A discrete GPU is available on the system. We will use that for performance")
+                eslog.debug("A discrete GPU is available on the system. We will use that for performance")
                 discrete_index = vulkan.get_discrete_gpu_index()
                 if discrete_index:
-                    _logger.debug("Using Discrete GPU Index: %s for Dolphin", discrete_index)
+                    eslog.debug("Using Discrete GPU Index: {} for Dolphin".format(discrete_index))
                     dolphinGFXSettings.set("Hardware", "Adapter", discrete_index)
                 else:
-                    _logger.debug("Couldn't get discrete GPU index")
+                    eslog.debug("Couldn't get discrete GPU index")
             else:
-                _logger.debug("Discrete GPU is not available on the system. Using default.")
+                eslog.debug("Discrete GPU is not available on the system. Using default.")
 
         # Graphics setting Aspect Ratio
         if system.isOptSet('dolphin_aspect_ratio'):
@@ -524,8 +523,7 @@ class DolphinGenerator(Generator):
     def getHotkeysContext(self) -> HotkeysContext:
         return {
             "name": "dolphin",
-            "keys": { "exit": ["KEY_LEFTALT", "KEY_F4"],
-                      "previous_slot": [ "KEY_LEFTSHIFT", "KEY_F2" ], "next_slot": [ "KEY_LEFTSHIFT", "KEY_F1" ], "save_state": "KEY_F5", "restore_state": "KEY_F8" }
+            "keys": { "exit": ["KEY_LEFTALT", "KEY_F4"] }
         }
 
 # Get the language from the environment if user didn't set it in ES.

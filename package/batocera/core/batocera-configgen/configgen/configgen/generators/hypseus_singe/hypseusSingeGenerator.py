@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Final, cast
 
 import ffmpeg
 
-from ... import Command
+from ... import Command, controllersConfig
 from ...batoceraPaths import CONFIGS, ROMS, mkdir_if_not_exists
 from ...controller import generate_sdl_game_controller_config
 from ..Generator import Generator
@@ -17,7 +17,7 @@ from ..Generator import Generator
 if TYPE_CHECKING:
     from ...types import HotkeysContext
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 _DATA_DIR: Final = CONFIGS / 'hypseus-singe'
 _CONFIG: Final = _DATA_DIR / 'hypinput.ini'
@@ -30,7 +30,7 @@ class HypseusSingeGenerator(Generator):
     def getHotkeysContext(self) -> HotkeysContext:
         return {
             "name": "hypseus-singe",
-            "keys": { "exit": "KEY_ESC", "menu": "KEY_9" }
+            "keys": { "exit": "KEY_ESC" }
         }
 
     @staticmethod
@@ -52,7 +52,7 @@ class HypseusSingeGenerator(Generator):
         for root, dirs, files in os.walk(start_path):
             if filename in files:
                 full_path = Path(root) / filename
-                _logger.debug("Found m2v file in path - %s", full_path)
+                eslog.debug("Found m2v file in path - {}".format(full_path))
                 return full_path
 
         return None
@@ -161,24 +161,24 @@ class HypseusSingeGenerator(Generator):
         m2v_filename = self.find_m2v_from_txt(frameFile)
 
         if m2v_filename:
-            _logger.debug("First .m2v file found: %s", m2v_filename)
+            eslog.debug("First .m2v file found: {}".format(m2v_filename))
         else:
-            _logger.debug("No .m2v files found in the text file.")
+            eslog.debug("No .m2v files found in the text file.")
 
         # now get the resolution from the m2v file
         video_path = rom_path / m2v_filename if m2v_filename is not None else rom_path
 
         # check the path exists
         if not video_path.exists():
-            _logger.debug("Could not find m2v file in path - %s", video_path)
+            eslog.debug("Could not find m2v file in path - {}".format(video_path))
             video_path = self.find_file(rom_path, cast(str, m2v_filename))
 
-        _logger.debug("Full m2v path is: %s", video_path)
+        eslog.debug("Full m2v path is: {}".format(video_path))
 
         video_resolution: tuple[int, int] | None = None
         if video_path != None:
             video_resolution = self.get_resolution(video_path)
-            _logger.debug("Resolution: %s", video_resolution)
+            eslog.debug("Resolution: {}".format(video_resolution))
 
         if system.name == "singe":
             commandArray = ['/usr/bin/hypseus',
@@ -214,8 +214,9 @@ class HypseusSingeGenerator(Generator):
             bezelRequired = True
         # original
         else:
-            if video_resolution and video_resolution[0]:
+            if video_resolution and video_resolution[0] != "0":
                 scaling_factor = gameResolution["height"] / video_resolution[1]
+                screen_width = gameResolution["width"]
                 new_width = video_resolution[0] * scaling_factor
                 commandArray.extend(["-x", str(new_width), "-y", str(gameResolution["height"])])
                 # check if 4:3 for bezels
@@ -225,7 +226,7 @@ class HypseusSingeGenerator(Generator):
                 else:
                     bezelRequired = False
             else:
-                _logger.debug("Video resolution not found - using stretch")
+                eslog.debug("Video resolution not found - using stretch")
                 commandArray.extend(["-x", str(gameResolution["width"]), "-y", str(gameResolution["height"])])
                 if abs(gameResolution["width"] / gameResolution["height"] - 4/3) < 0.01:
                     xratio = 4/3
@@ -251,7 +252,7 @@ class HypseusSingeGenerator(Generator):
             if system.isOptSet('singe_sprites') and system.getOptBoolean("singe_sprites"):
                 commandArray.append("-blend_sprites")
 
-            bordersSize = system.guns_borders_size_name(guns)
+            bordersSize = controllersConfig.gunsBordersSizeName(guns, system.config)
             if bordersSize is not None:
 
                 borderColor = "w"
@@ -311,7 +312,7 @@ class HypseusSingeGenerator(Generator):
 
         # Hide crosshair in supported games (e.g. ActionMax, ALG)
         # needCrosshair
-        if len(guns) > 0 and (not system.isOptSet('singe_crosshair') or ((system.isOptSet('singe_crosshair') and not system.getOptBoolean("singe_crosshair")))):
+        if len(guns) > 0 and (not system.isOptSet('singe_crosshair') or ((system.isOptSet('singe_crosshair') and not system.config["singe_crosshair"]))):
             commandArray.append("-nocrosshair")
 
         # Enable SDL_TEXTUREACCESS_STREAMING, can aid SBC's with SDL2 => 2.0.16

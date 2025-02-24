@@ -7,9 +7,9 @@ index 3262444..3e37133 100644
  #ifndef GRUB_MACHINE_EFI
    /* Hello.  */
 -  grub_setcolorstate (GRUB_TERM_COLOR_HIGHLIGHT);
--  grub_printf ("Welcome to GRUB!\n\n");
+-  grub_printf ("ProjectArcade OS | Welcome to GRUB!\n\n");
 +  //grub_setcolorstate (GRUB_TERM_COLOR_HIGHLIGHT);
-+  //grub_printf ("Welcome to GRUB!\n\n");
++  //grub_printf ("ProjectArcade OS | Welcome to GRUB!\n\n");
    grub_setcolorstate (GRUB_TERM_COLOR_STANDARD);
  #endif
  
@@ -26,7 +26,7 @@ index 7e0a158..255db71 100644
 -      grub_printf ("\n\n");
 +      //grub_printf ("  ");
 +      //grub_printf_ (N_("Booting `%s'"), entry->title);
-+      grub_printf ("\nbatocera.linux\n");
++      grub_printf ("\nProjectArcade OS\n");
      }
  }
  

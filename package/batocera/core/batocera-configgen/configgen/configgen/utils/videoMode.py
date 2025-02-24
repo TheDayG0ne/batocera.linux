@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
     from ..types import Resolution, ScreenInfo
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 _ROTATION_FILE: Final = Path("/var/run/rk-rotation")
 _GLXINFO_BIN: Final = Path("/usr/bin/glxinfo")
@@ -25,15 +25,15 @@ _GLXINFO_BIN: Final = Path("/usr/bin/glxinfo")
 def changeMode(videomode: str) -> None:
     if checkModeExists(videomode):
         cmd = ["batocera-resolution", "setMode", videomode]
-        _logger.debug("setVideoMode(%s): %s", videomode, cmd)
+        eslog.debug(f"setVideoMode({videomode}): {cmd}")
         max_tries = 2  # maximum number of tries to set the mode
         for i in range(max_tries):
             try:
                 result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-                _logger.debug(result.stdout.strip())
+                eslog.debug(result.stdout.strip())
                 return
             except subprocess.CalledProcessError as e:
-                _logger.error("Error setting video mode: %s", e.stderr)
+                eslog.error(f"Error setting video mode: {e.stderr}")
                 if i == max_tries - 1:
                     raise
                 time.sleep(1)
@@ -91,8 +91,8 @@ def getScreensInfos(config: Mapping[str, object]) -> list[ScreenInfo]:
         except:
             pass # ignore bad information
 
-    _logger.debug("Screens:")
-    _logger.debug(res)
+    eslog.debug("Screens:")
+    eslog.debug(res)
     return res
 
 def getScreens() -> list[str]:
@@ -142,11 +142,11 @@ def checkModeExists(videomode: str) -> bool:
         if(videomode == vals[0]):
             return True
 
-    _logger.error("invalid video mode %s", videomode)
+    eslog.error(f"invalid video mode {videomode}")
     return False
 
 def changeMouse(mode: bool) -> None:
-    _logger.debug("changeMouseMode(%s)", mode)
+    eslog.debug(f"changeMouseMode({mode})")
     proc = subprocess.Popen([f"batocera-mouse {'show' if mode else 'hide'}"], stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
 

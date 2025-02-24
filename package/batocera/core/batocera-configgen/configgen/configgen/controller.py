@@ -5,8 +5,9 @@ from collections.abc import Iterable, Mapping
 from dataclasses import InitVar, dataclass, field, replace
 from pathlib import Path
 from typing import TYPE_CHECKING, Final, Literal, Self, TypedDict, Unpack, cast
+import evdev
 
-from .batoceraPaths import BATOCERA_ES_DIR, HOME, USER_ES_DIR
+from .batoceraPaths import BATOCERA_ES_DIR, USER_ES_DIR
 from .input import Input, InputDict, InputMapping
 
 if TYPE_CHECKING:
@@ -58,8 +59,6 @@ def _key_to_sdl_game_controller_config(keyname: str, input: Input, /) -> str | N
             return f"{keyname}:a{input.id}{'~' if int(input.value) > 0 else ''}"
         elif keyname in ('dpup', 'dpdown', 'dpleft', 'dpright'):
             return f"{keyname}:{'-' if int(input.value) < 0 else '+'}a{input.id}"
-        elif 'trigger' in keyname:
-            return f"{keyname}:a{input.id}{'~' if int(input.value) < 0 else ''}"
         else:
             return f'{keyname}:a{input.id}'
     elif input.type == 'key':
@@ -103,9 +102,9 @@ class Controller:
         self.inputs = dict(inputs_) if inputs_ is not None else {}
 
     def replace(self, /, **changes: Unpack[_ControllerChanges]) -> Self:
-        return replace(self, **changes, inputs_={name: input.replace() for name, input in self.inputs.items()})
+        return replace(self, **changes, inputs_=self.inputs)
 
-    def generate_sdl_game_db_line(self, sdl_mapping: Mapping[str, str] = _DEFAULT_SDL_MAPPING, /, ignore_buttons: list[str] | None = None) -> str:
+    def generate_sdl_game_db_line(self, sdl_mapping: Mapping[str, str] = _DEFAULT_SDL_MAPPING, /) -> str:
         """Returns an SDL_GAMECONTROLLERCONFIG-formatted string for the given configuration."""
         config = [self.guid, self.real_name.replace(",", "."), "platform:Linux"]
 
@@ -123,9 +122,7 @@ class Controller:
         mapped_button_ids: set[str] = set()
 
         for input in self.inputs.values():
-            if input.name is None:  # pragma: no cover
-                continue
-            if ignore_buttons is not None and input.name in ignore_buttons:
+            if input.name is None:
                 continue
             if input.name == 'hotkey':
                 hotkey_input = input
@@ -231,8 +228,8 @@ class Controller:
         return None
 
 
-def generate_sdl_game_controller_config(controllers: ControllerMapping, /, ignore_buttons: list[str] | None = None) -> str:
-    return "\n".join(controller.generate_sdl_game_db_line(ignore_buttons = ignore_buttons) for controller in controllers.values())
+def generate_sdl_game_controller_config(controllers: ControllerMapping, /) -> str:
+    return "\n".join(controller.generate_sdl_game_db_line() for controller in controllers.values())
 
 
 def write_sdl_controller_db(
@@ -245,41 +242,35 @@ def write_sdl_controller_db(
 
     return outputFile
 
-
-class _RelaxedDict(TypedDict):
-    centered: bool
-    reversed: bool
-
-
-def get_mapping_axis_relaxed_values(pad: Controller) -> dict[str, _RelaxedDict]:
-    import evdev
-
+def getMappingAxisRelaxValues(pad):
     # read the sdl2 cache if possible for axis
-    cache_file = Path(HOME / ".sdl2" / f"{pad.guid}_{pad.name}.cache")
-    if not cache_file.exists():
-        return {}
-
-    cache_content = cache_file.read_text(encoding="utf-8").splitlines()
-    n = int(cache_content[0]) # number of lines of the cache
-
-    relaxed_values: list[int] = [int(cache_content[i]) for i in range(1, n+1)]
+    cachePath = f"/userdata/system/.sdl2/{pad.guid}_{pad.name}.cache"
+    cacheFile = Path(cachePath)
+    if not cacheFile.exists():
+        return []
+    cacheContent = cacheFile.read_text(encoding="utf-8").splitlines()
+    n = int(cacheContent[0]) # number of lines of the cache
+    relaxValues = []
+    for i in range(1, n+1):
+        relaxValues.append(int(cacheContent[i]))
 
     # get full list of axis (in case one is not used in es)
-    caps = evdev.InputDevice(pad.device_path).capabilities()
-    code_values: dict[int, int]  = {}
+    devInfos = evdev.InputDevice(pad.device_path)
+    caps = devInfos.capabilities()
+    codeValues = {}
     i = 0
-    for code, _ in caps[evdev.ecodes.EV_ABS]:
-        if code < evdev.ecodes.ABS_HAT0X:
-            code_values[code] = relaxed_values[i]
+    for code in caps[evdev.ecodes.EV_ABS]:
+        if code[0] < evdev.ecodes.ABS_HAT0X:
+            codeValues[code[0]] = relaxValues[i]
             i = i+1
 
     # dict with es input names
-    res: dict[str, _RelaxedDict] = {}
-    for x, input in pad.inputs.items():
-        if input.type == "axis":
+    res = {}
+    for x in pad.inputs:
+        if pad.inputs[x].type == "axis":
             # sdl values : from -32000 to 32000 / do not put < 0 cause a wheel/pad could be not correctly centered
             # 3 possible initial positions <1----------------|-------2-------|----------------3>
-            val = code_values[int(cast(str, input.code))]
+            val = codeValues[int(pad.inputs[x].code)]
             res[x] = { "centered":  val > -4000 and val < 4000, "reversed": val > 4000 }
     return res
 

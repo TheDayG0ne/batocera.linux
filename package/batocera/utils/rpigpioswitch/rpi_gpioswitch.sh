@@ -196,16 +196,17 @@ function onoffshim_start()
 
 
     # This is Button command (GPIO17 default)
-    power=$(gpioget 0 $1)
-    echo $$ > /tmp/powerswitch.pid
+    echo $1 > /sys/class/gpio/export
+    echo in > /sys/class/gpio/gpio$1/direction
+
+    power=$(cat /sys/class/gpio/gpio$1/value)
     [ $power -eq 0 ] && switchtype=1 #Sliding Switch
     [ $power -eq 1 ] && switchtype=0 #Momentary push button
 
     until [ $power -eq $switchtype ]; do
-        gpiomon --num-events=1 -s 0 $1
-        sleep 0.1
-        power=$(gpioget 0 $1)
-done
+        power=$(cat /sys/class/gpio/gpio$1/value)
+        sleep 1
+    done
 
     # Switch off
     if [ "$?" = "0" ]; then
@@ -216,9 +217,8 @@ done
 
 function onoffshim_stop()
 {
-    # Cleanup script and gpiomon processes
-    pid=$(cat /tmp/powerswitch.pid)
-    kill $(pgrep -P $pid) $pid &> /dev/null
+    # Cleanup GPIO init, default Button command (GPIO 17)
+    echo "$1" > /sys/class/gpio/unexport
 }
 
 function onoffshim_config()

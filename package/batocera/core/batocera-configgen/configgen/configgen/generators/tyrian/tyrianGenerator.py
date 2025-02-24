@@ -12,7 +12,7 @@ from ..Generator import Generator
 if TYPE_CHECKING:
     from ...types import HotkeysContext
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 class TyrianGenerator(Generator):
 
@@ -20,7 +20,7 @@ class TyrianGenerator(Generator):
         try:
             os.chdir(ROMS / "tyrian" / "data")
         except:
-            _logger.error("ERROR: Game assets not installed. You can get them from the Batocera Content Downloader.")
+            eslog.error("ERROR: Game assets not installed. You can get them from the Batocera Content Downloader.")
         commandArray = ["opentyrian"]
 
         return Command.Command(

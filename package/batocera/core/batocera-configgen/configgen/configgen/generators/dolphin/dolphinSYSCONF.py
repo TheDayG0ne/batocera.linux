@@ -7,7 +7,8 @@ from os import environ
 from struct import pack, unpack
 from typing import TYPE_CHECKING, Any
 
-from ...utils.logger import setup_logging
+from configgen.utils.logger import setup_logging
+
 from .dolphinPaths import DOLPHIN_SAVES
 
 if TYPE_CHECKING:
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
     from ...types import Resolution
 
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 def readBEInt16(f):
     bytes = f.read(2)
@@ -85,7 +86,7 @@ def readWriteEntry(f, setval):
             raise Exception(f"unknown type {itemType}")
 
     if not setval or itemName in setval:
-        _logger.debug('%12s = %s', itemName, itemValue)
+        eslog.debug(f'{itemName:12s} = {itemValue}')
 
 def readWriteFile(filepath: Path, setval):
     # open in read read/write depending of the action

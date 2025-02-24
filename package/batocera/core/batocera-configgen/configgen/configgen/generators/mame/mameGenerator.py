@@ -12,7 +12,7 @@ from xml.dom import minidom
 
 from PIL import Image
 
-from ... import Command
+from ... import Command, controllersConfig
 from ...batoceraPaths import (
     BATOCERA_SHARE_DIR,
     BIOS,
@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from ...Emulator import Emulator
     from ...types import HotkeysContext, Resolution
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 
 class MameGenerator(Generator):
@@ -44,12 +44,7 @@ class MameGenerator(Generator):
     def getHotkeysContext(self) -> HotkeysContext:
         return {
             "name": "mame",
-            "keys": { "exit":  "KEY_ESC",
-                      "menu":  "KEY_TAB",
-                      "pause": "KEY_F5",
-                      "coin":  "KEY_5",
-                      "save_state" : [ "KEY_LEFTSHIFT", "KEY_F6" ],
-                      "restore_state": [ "KEY_LEFTSHIFT", "KEY_F7" ] }
+            "keys": { "exit": "KEY_ESC", "menu": "KEY_TAB", "pause": "KEY_F5", "coin": "KEY_5" }
         }
 
     def generate(self, system, rom, playersControllers, metadata, guns, wheels, gameResolution):
@@ -219,7 +214,7 @@ class MameGenerator(Generator):
             commandArray += [ "-modesetting" ]
             commandArray += [ "-readconfig" ]
         else:
-            commandArray += [ "-resolution", f"{gameResolution['width']}x{gameResolution['height']}" ]
+            commandArray += [ "-resolution", "{}x{}".format(gameResolution["width"], gameResolution["height"]) ]
 
         # Refresh rate options to help with screen tearing
         # syncrefresh is unlisted, it requires specific display timings and 99.9% of users will get unplayable games.
@@ -344,14 +339,14 @@ class MameGenerator(Generator):
                 commandArray += ["-sl7", "cffa202"]
                 if system.isOptSet('gameio') and system.config['gameio'] != 'none':
                     if system.config['gameio'] == 'joyport' and messModel != 'apple2p':
-                        _logger.debug("Joyport joystick is only compatible with Apple II Plus")
+                        eslog.debug("Joyport joystick is only compatible with Apple II Plus")
                     else:
                         commandArray += ["-gameio", system.config['gameio']]
                         specialController = system.config['gameio']
 
             # RAM size (Mac excluded, special handling below)
             if system.name != "macintosh" and system.isOptSet("ramsize"):
-                commandArray += [ '-ramsize', f'{system.config["ramsize"]}M' ]
+                commandArray += [ '-ramsize', str(system.config["ramsize"]) + 'M' ]
 
             # Mac RAM & Image Reader (if applicable)
             if system.name == "macintosh":
@@ -366,7 +361,7 @@ class MameGenerator(Generator):
                             ramSize = 32
                         if messModel == 'maciix' and ramSize == 48:
                             ramSize = 64
-                        commandArray += [ '-ramsize', f'{ramSize}M' ]
+                        commandArray += [ '-ramsize', str(ramSize) + 'M' ]
                     if messModel == 'maciix':
                         imageSlot = 'nba'
                         if system.isOptSet('imagereader'):
@@ -375,7 +370,7 @@ class MameGenerator(Generator):
                             else:
                                 imageSlot = system.config["imagereader"]
                         if imageSlot != "":
-                            commandArray += [ f"-{imageSlot}", "image" ]
+                            commandArray += [ "-" + imageSlot, 'image' ]
 
             if softList == "":
                 # Boot disk for Macintosh
@@ -383,10 +378,10 @@ class MameGenerator(Generator):
                 if system.name == "macintosh" and system.isOptSet("bootdisk"):
                     if system.config["bootdisk"] in [ "macos30", "macos608", "macos701", "macos75" ]:
                         bootType = "-flop1"
-                        bootDisk = f"/userdata/bios/{system.config['bootdisk']}.img"
+                        bootDisk = "/userdata/bios/" + system.config["bootdisk"] + ".img"
                     else:
                         bootType = "-hard"
-                        bootDisk = f"/userdata/bios/{system.config['bootdisk']}.chd"
+                        bootDisk = "/userdata/bios/" + system.config["bootdisk"] + ".chd"
                     commandArray += [ bootType, bootDisk ]
 
                 # Alternate ROM type for systems with mutiple media (ie cassette & floppy)
@@ -397,7 +392,7 @@ class MameGenerator(Generator):
                         if messModel == "fmtmarty" and system.config["altromtype"] == "flop1":
                             commandArray += [ "-flop" ]
                         else:
-                            commandArray += [ f'-{system.config["altromtype"]}' ]
+                            commandArray += [ "-" + system.config["altromtype"] ]
                     elif system.name == "adam":
                         # add some logic based on the rom extension
                         rom_extension = rom_path.suffix
@@ -415,20 +410,20 @@ class MameGenerator(Generator):
                         else:
                             commandArray += [ "-cart" ]
                     else:
-                        commandArray += [ f'-{messRomType[messMode]}' ]
+                        commandArray += [ "-" + messRomType[messMode] ]
                 else:
                     if system.isOptSet("bootdisk"):
                         if ((system.isOptSet("altromtype") and system.config["altromtype"] == "flop1") or not system.isOptSet("altromtype")) and system.config["bootdisk"] in [ "macos30", "macos608", "macos701", "macos75" ]:
                             commandArray += [ "-flop2" ]
                         elif system.isOptSet("altromtype"):
-                            commandArray += [ f'-{system.config["altromtype"]}' ]
+                            commandArray += [ "-" + system.config["altromtype"] ]
                         else:
-                            commandArray += [ f'-{messRomType[messMode]}' ]
+                            commandArray += [ "-" + messRomType[messMode] ]
                     else:
                         if system.isOptSet("altromtype"):
-                            commandArray += [ f'-{system.config["altromtype"]}' ]
+                            commandArray += [ "-" + system.config["altromtype"] ]
                         else:
-                            commandArray += [ f'-{messRomType[messMode]}' ]
+                            commandArray += [ "-" + messRomType[messMode] ]
                 # Use the full filename for MESS ROMs
                 commandArray += [ rom ]
             else:
@@ -507,7 +502,7 @@ class MameGenerator(Generator):
                                 if software.get('name') == romName:
                                     for info in software.iter('info'):
                                         if info.get('name') == 'usage':
-                                            autoRunCmd = f"{info.get('value')}\\n"
+                                            autoRunCmd = info.get('value') + '\\n'
 
                 # if still undefined, default autoRunCmd based on media type
                 if autoRunCmd == "":
@@ -520,9 +515,9 @@ class MameGenerator(Generator):
                     if (system.isOptSet('altromtype') and system.config["altromtype"] == "flop1") or (softList != "" and softList.endswith("flop")) or romExt.casefold() == ".dsk":
                         romType = 'flop'
                         if romName.casefold().endswith(".bas"):
-                            autoRunCmd = f'RUN \"{romName}\"\\n'
+                            autoRunCmd = 'RUN \"{}\"\\n'.format(romName)
                         else:
-                            autoRunCmd = f'LOADM \"{romName}\":EXEC\\n'
+                            autoRunCmd = 'LOADM \"{}\":EXEC\\n'.format(romName)
 
                 # check for a user override
                 autoRunFile = MAME_CONFIG / 'autoload' / f'{system.name}_{romType}_autoload.csv'
@@ -532,7 +527,7 @@ class MameGenerator(Generator):
                         for row in autoRunList:
                             if row and not row[0].startswith('#'):
                                 if row[0].casefold() == romName.casefold():
-                                    autoRunCmd = f"{row[1]}\\n"
+                                    autoRunCmd = row[1] + "\\n"
             else:
                 # Check for an override file, otherwise use generic (if it exists)
                 autoRunCmd = messAutoRun[messMode]
@@ -542,7 +537,7 @@ class MameGenerator(Generator):
                         autoRunList = csv.reader(openARFile, delimiter=';', quotechar="'")
                         for row in autoRunList:
                             if row[0].casefold() == romName.casefold():
-                                autoRunCmd = f"{row[1]}\\n"
+                                autoRunCmd = row[1] + "\\n"
                                 autoRunDelay = 3
             if autoRunCmd != "":
                 if autoRunCmd.startswith("'"):
@@ -558,11 +553,11 @@ class MameGenerator(Generator):
             bezelSet = None
         try:
             if messMode != -1:
-                MameGenerator.writeBezelConfig(bezelSet, system, rom_path, messSysName[messMode], gameResolution, system.guns_borders_size_name(guns), system.guns_border_ratio_type(guns))
+                MameGenerator.writeBezelConfig(bezelSet, system, rom_path, messSysName[messMode], gameResolution, controllersConfig.gunsBordersSizeName(guns, system.config), controllersConfig.gunsBorderRatioType(guns, system.config))
             else:
-                MameGenerator.writeBezelConfig(bezelSet, system, rom_path, "", gameResolution, system.guns_borders_size_name(guns), system.guns_border_ratio_type(guns))
+                MameGenerator.writeBezelConfig(bezelSet, system, rom_path, "", gameResolution, controllersConfig.gunsBordersSizeName(guns, system.config), controllersConfig.gunsBorderRatioType(guns, system.config))
         except:
-            MameGenerator.writeBezelConfig(None, system, rom_path, "", gameResolution, system.guns_borders_size_name(guns), system.guns_border_ratio_type(guns))
+            MameGenerator.writeBezelConfig(None, system, rom_path, "", gameResolution, controllersConfig.gunsBordersSizeName(guns, system.config), controllersConfig.gunsBorderRatioType(guns, system.config))
 
         buttonLayout = getMameControlScheme(system, rom_path)
 
@@ -704,8 +699,8 @@ class MameGenerator(Generator):
             f.write("<mamelayout version=\"2\">\n")
             f.write("<element name=\"bezel\"><image file=\"default.png\" /></element>\n")
             f.write("<view name=\"bezel\">\n")
-            f.write(f"<screen index=\"0\"><bounds x=\"{bz_x}\" y=\"{bz_y}\" width=\"{bz_width}\" height=\"{bz_height}\" /></screen>\n")
-            f.write(f"<element ref=\"bezel\"><bounds x=\"0\" y=\"0\" width=\"{img_width}\" height=\"{img_height}\" alpha=\"{bz_alpha}\" /></element>\n")
+            f.write("<screen index=\"0\"><bounds x=\"" + str(bz_x) + "\" y=\"" + str(bz_y) + "\" width=\"" + str(bz_width) + "\" height=\"" + str(bz_height) + "\" /></screen>\n")
+            f.write("<element ref=\"bezel\"><bounds x=\"0\" y=\"0\" width=\"" + str(img_width) + "\" height=\"" + str(img_height) + "\" alpha=\"" + str(bz_alpha) + "\" /></element>\n")
             f.write("</view>\n")
             f.write("</mamelayout>\n")
             f.close()
@@ -718,19 +713,19 @@ class MameGenerator(Generator):
                         tattoo_file = BATOCERA_SHARE_DIR / 'controller-overlays' / 'generic.png'
                     tattoo = Image.open(tattoo_file)
                 except Exception as e:
-                    _logger.error("Error opening controller overlay: %s", tattoo_file)
+                    eslog.error(f"Error opening controller overlay: {tattoo_file}")
             elif system.config['bezel.tattoo'] == 'custom' and Path(system.config['bezel.tattoo_file']).exists():
-                tattoo_file = Path(system.config['bezel.tattoo_file'])
                 try:
+                    tattoo_file = Path(system.config['bezel.tattoo_file'])
                     tattoo = Image.open(tattoo_file)
                 except:
-                    _logger.error("Error opening custom file: %s", tattoo_file)
+                    eslog.error("Error opening custom file: {}".format('tattoo_file'))
             else:
-                tattoo_file = BATOCERA_SHARE_DIR / 'controller-overlays' / 'generic.png'
                 try:
+                    tattoo_file = BATOCERA_SHARE_DIR / 'controller-overlays' / 'generic.png'
                     tattoo = Image.open(tattoo_file)
                 except:
-                    _logger.error("Error opening custom file: %s", tattoo_file)
+                    eslog.error("Error opening custom file: {}".format('tattoo_file'))
             output_png_file = Path("/tmp/bezel_tattooed.png")
             back = Image.open(pngFile)
             tattoo = tattoo.convert("RGBA")
@@ -783,7 +778,7 @@ class MameGenerator(Generator):
         exitcode = proc.returncode
 
         if exitcode != 0:
-            raise Exception(f"mame -listxml {machine} failed")
+            raise Exception("mame -listxml " + machine + " failed")
 
         infofile = tmpdir / "infos.xml"
         f = infofile.open("w")

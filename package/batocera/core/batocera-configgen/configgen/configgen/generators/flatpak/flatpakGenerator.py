@@ -33,5 +33,5 @@ class FlatpakGenerator(Generator):
     def getHotkeysContext(self) -> HotkeysContext:
         return {
             "name": "flatpak",
-            "keys": { "exit": "flatpak kill $(flatpak ps --columns=application | head -n 1)" }
+            "keys": { "exit": ["KEY_LEFTALT", "KEY_F4"] }
         }

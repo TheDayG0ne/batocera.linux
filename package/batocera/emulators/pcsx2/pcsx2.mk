@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PCSX2_VERSION = v2.3.168
+PCSX2_VERSION = v2.3.146
 PCSX2_SITE = https://github.com/pcsx2/pcsx2.git
 PCSX2_SITE_METHOD = git
 PCSX2_GIT_SUBMODULES = YES
@@ -57,6 +57,14 @@ define PCSX2_INSTALL_TARGET_CMDS
     # use our SDL config
     rm $(TARGET_DIR)/usr/pcsx2/bin/resources/game_controller_db.txt
 endef
+
+define PCSX2_EVMAPY
+	mkdir -p $(TARGET_DIR)/usr/share/evmapy
+	cp $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/emulators/pcsx2/ps2.pcsx2.keys \
+        $(TARGET_DIR)/usr/share/evmapy
+endef
+
+PCSX2_POST_INSTALL_TARGET_HOOKS += PCSX2_EVMAPY
 
 define PCSX2_TEXTURES
 	mkdir -p $(TARGET_DIR)/usr/pcsx2/bin/resources/textures

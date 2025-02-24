@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from ...types import HotkeysContext
 
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 class CdogsGenerator(Generator):
 
@@ -230,7 +230,7 @@ class CdogsGenerator(Generator):
                 os.chdir(romdir / assetdir)
             os.chdir(romdir)
         except FileNotFoundError:
-            _logger.error("ERROR: Game assets not installed. You can get them from the Batocera Content Downloader.")
+            eslog.error("ERROR: Game assets not installed. You can get them from the Batocera Content Downloader.")
             raise
 
         commandArray = ["cdogs"]

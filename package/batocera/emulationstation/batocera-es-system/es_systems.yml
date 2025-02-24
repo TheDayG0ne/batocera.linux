@@ -2464,7 +2464,7 @@ windows:
   release: 1992
   hardware: computer
   extensions: [pc, exe, wine, wsquashfs, wtgz]
-  platform:   windows
+  platform:   pc
   theme:      windows
   emulators:
     wine:
@@ -2481,8 +2481,8 @@ windows_installers:
   manufacturer: Microsoft
   release: 1992
   hardware: computer
-  extensions: [exe, iso, msi]
-  platform:   windows
+  extensions: [exe, iso]
+  platform:   pc
   group:      windows
   emulators:
     wine:
@@ -2788,6 +2788,22 @@ ikemen:
     IKEMEN Go is a reimplementation of IKEMEN, an engine which extends the capacities of MUGEN for fighting games
   comment_fr: |
     IKEMEN Go est une re-ecriture de IKEMEN, un moteur qui etend les capacites de MUGEN pour les jeux de combat
+
+fpinball:
+  name:       Future Pinball
+  manufacturer: Christopher Leathley
+  release: 2005
+  hardware: port
+  extensions: [fpt]
+  emulators:
+    fpinball:
+      fpinball:  { requireAnyOf: [BR2_PACKAGE_FPINBALL] }
+  comment_en: |
+    For more info: https://wiki.batocera.org/systems:windows
+  comment_fr: |
+    Trouvez la documentation ici: https://wiki.batocera.org/systems:windows
+  comment_br: |
+    Para mais informações: https://wiki.batocera.org/systems:windows
 
 flash:
   name:       Flash Player
@@ -4958,8 +4974,8 @@ reminiscence:
   comment_br: |
     Para mais informações: https://wiki.batocera.org/systems:reminiscence
 
-traider1:
-  name: Tomb Raider
+openlara:
+  name: OpenLara
   manufacturer: Ports
   release: 1996
   hardware: port
@@ -4967,27 +4983,14 @@ traider1:
   platform: pc
   group: ports
   emulators:
-    tr1x:
-      tr1x: { requireAnyOf: [BR2_PACKAGE_TR1X] }
+    libretro:
+      openlara: { requireAnyOf: [BR2_PACKAGE_LIBRETRO_OPENLARA] }
   comment_en: |
-    The origianl Tomb Raider files should go in this rom folder from your previous Windows installation.
-    You can safetly remove .exe & .dll files which are not necessary for TR1X to run the game.
-    We highly recommend your folders are in lowercase to ensure call files are accounted for.
-    Then create a launcher file with a .croft extension.
-    i.e. Tomb Raider.croft
-    This will allow EmulationStation (ES) to launch the game etc.
-
-    On first launch (provided you have internet) we will download the music files so don't be alarmed if slow.
-    Subsequent launches will be faster.
-
-    To choose the Unfinished expansion pack, enable the associated ES option.
-    We will download the `Unfinished Expansion pack` if necessary so again the first launch may be slow.
-
-    For more info: https://wiki.batocera.org/systems:traider1
+    For more info: https://wiki.batocera.org/systems:openlara
   comment_fr: |
-    Trouvez la documentation ici: https://wiki.batocera.org/systems:traider1
+    Trouvez la documentation ici: https://wiki.batocera.org/systems:openlara
   comment_br: |
-    Para mais informações: https://wiki.batocera.org/systems:traider1
+    Para mais informações: https://wiki.batocera.org/systems:openlara
 
 quake3:
   name: Quake III
@@ -5709,21 +5712,3 @@ lindbergh:
     Trouvez la documentation ici : https://wiki.batocera.org/systems:lindbergh
   comment_br: |
     Para mais informações: https://wiki.batocera.org/systems:lindbergh
-
-traider2:
-  name: Tomb Raider 2
-  manufacturer: Ports
-  release: 1997
-  hardware: port
-  extensions: [croft]
-  platform: pc
-  group: ports
-  emulators:
-    tr2x:
-      tr2x: { requireAnyOf: [BR2_PACKAGE_TR2X] }
-  comment_en: |
-    For more info: https://wiki.batocera.org/systems:traider2
-  comment_fr: |
-    Trouvez la documentation ici: https://wiki.batocera.org/systems:traider2
-  comment_br: |
-    Para mais informações: https://wiki.batocera.org/systems:traider2

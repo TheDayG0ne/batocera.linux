@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from ...Emulator import Emulator
 
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 ppssppConfig: Final   = PPSSPP_PSP_SYSTEM_DIR / 'ppsspp.ini'
 ppssppControls: Final = PPSSPP_PSP_SYSTEM_DIR / 'controls.ini'
@@ -45,19 +45,19 @@ def createPPSSPPConfig(iniConfig, system):
     if system.isOptSet("gfxbackend") and system.config["gfxbackend"] == "3 (VULKAN)":
         # Check if we have a discrete GPU & if so, set the Name
         if vulkan.is_available():
-            _logger.debug("Vulkan driver is available on the system.")
+            eslog.debug("Vulkan driver is available on the system.")
             if vulkan.has_discrete_gpu():
-                _logger.debug("A discrete GPU is available on the system. We will use that for performance")
+                eslog.debug("A discrete GPU is available on the system. We will use that for performance")
                 discrete_name = vulkan.get_discrete_gpu_name()
                 if discrete_name:
-                    _logger.debug("Using Discrete GPU Name: %s for PPSSPP", discrete_name)
+                    eslog.debug("Using Discrete GPU Name: {} for PPSSPP".format(discrete_name))
                     iniConfig.set("Graphics", "VulkanDevice", discrete_name)
                 else:
-                    _logger.debug("Couldn't get discrete GPU Name")
+                    eslog.debug("Couldn't get discrete GPU Name")
             else:
-                _logger.debug("Discrete GPU is not available on the system. Using default.")
+                eslog.debug("Discrete GPU is not available on the system. Using default.")
         else:
-            _logger.debug("Vulkan driver is not available on the system. Falling back to OpenGL")
+            eslog.debug("Vulkan driver is not available on the system. Falling back to OpenGL")
             iniConfig.set("Graphics", "GraphicsBackend", "0 (OPENGL)")
 
     # Display FPS

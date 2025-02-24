@@ -15,11 +15,10 @@ if TYPE_CHECKING:
 
     from ...controller import Controller, ControllerMapping
     from ...Emulator import Emulator
-    from ...gun import GunMapping
     from ...input import Input
-    from ...types import DeviceInfoMapping
+    from ...types import DeviceInfoMapping, GunMapping
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 def generatePadsConfig(cfgPath: Path, playersControllers: ControllerMapping, sysName: str, altButtons: str | int, customCfg: bool, specialController: str, decorations: str | None, useGuns: bool, guns: GunMapping, useWheels: bool, wheels: DeviceInfoMapping, useMouse: bool, multiMouse: bool, system: Emulator) -> None:
     # config file
@@ -106,7 +105,7 @@ def generatePadsConfig(cfgPath: Path, playersControllers: ControllerMapping, sys
             useControls = f"apple2-{specialController}"
     else:
         useControls = sysName
-    _logger.debug("Using %s for controller config.", useControls)
+    eslog.debug(f"Using {useControls} for controller config.")
 
     # Open or create alternate config file for systems with special controllers/settings
     # If the system/game is set to per game config, don't try to open/reset an existing file, only write if it's blank or going to the shared cfg folder
@@ -223,21 +222,21 @@ def generatePadsConfig(cfgPath: Path, playersControllers: ControllerMapping, sys
             for w in wheels:
                 if wheels[w]["joystick_index"] == pad.index:
                     isWheel = True
-                    _logger.debug("player %s has a wheel", nplayer)
+                    eslog.debug(f"player {nplayer} has a wheel")
             if isWheel:
                 for x in mappings_use.copy():
                     if mappings_use[x] == "l2" or mappings_use[x] == "r2" or mappings_use[x] == "joystick1left":
                         del mappings_use[x]
-                mappings_use["PEDAL"] = "r2"
-                mappings_use["PEDAL2"] = "l2"
-                mappings_use["PADDLE"] = "joystick1left"
+                mappings_use["PEDAL".format(pad.index+1)] = "r2"
+                mappings_use["PEDAL2".format(pad.index+1)] = "l2"
+                mappings_use["PADDLE".format(pad.index+1)] = "joystick1left"
 
         addCommonPlayerPorts(config, xml_input, nplayer)
 
         ### find a keyboard key to simulate the action of the player (always like button 2) ; search in batocera.conf, else default config
         pedalsKeys = {1: "c", 2: "v", 3: "b", 4: "n"}
         pedalkey: str | None = None
-        pedalcname = f"controllers.pedals{nplayer}"
+        pedalcname = "controllers.pedals{}".format(nplayer)
         if pedalcname in system.config:
             pedalkey = system.config[pedalcname]
         else:
@@ -290,7 +289,7 @@ def generatePadsConfig(cfgPath: Path, playersControllers: ControllerMapping, sys
             ### find a keyboard key to simulate the action of the player (always like button 2) ; search in batocera.conf, else default config
             pedalsKeys = {1: "c", 2: "v", 3: "b", 4: "n"}
             pedalkey = None
-            pedalcname = f"controllers.pedals{gunnum}"
+            pedalcname = "controllers.pedals{}".format(gunnum)
             if pedalcname in system.config:
                 pedalkey = system.config[pedalcname]
             else:
@@ -305,14 +304,14 @@ def generatePadsConfig(cfgPath: Path, playersControllers: ControllerMapping, sys
     #mameXml = open(configFile, "w")
     # TODO: python 3 - workawround to encode files in utf-8
     if overwriteMAME:
-        _logger.debug("Saving %s", configFile)
+        eslog.debug(f"Saving {configFile}")
         with codecs.open(str(configFile), "w", "utf-8") as mameXml:
             dom_string = os.linesep.join([s for s in config.toprettyxml().splitlines() if s.strip()]) # remove ugly empty lines while minicom adds them...
             mameXml.write(dom_string)
 
     # Write alt config (if used, custom config is turned off or file doesn't exist yet)
     if sysName in specialControlList and overwriteSystem:
-        _logger.debug("Saving %s", configFile_alt)
+        eslog.debug(f"Saving {configFile_alt}")
         with codecs.open(str(configFile_alt), "w", "utf-8") as mameXml_alt:
             dom_string_alt = os.linesep.join([s for s in config_alt.toprettyxml().splitlines() if s.strip()]) # remove ugly empty lines while minicom adds them...
             mameXml_alt.write(dom_string_alt)
@@ -331,20 +330,20 @@ def reverseMapping(key: str) -> str | None:
 def generatePortElement(pad: Controller, config: minidom.Document, nplayer: int, padindex: int, mapping: str, key: str, input: Input, reversed: bool, altButtons: str | int, gunmappings: Mapping[str, str], isWheel: bool, mousemappings: Mapping[str, str], multiMouse: bool, pedalkey: str | None):
     # Generic input
     xml_port = config.createElement("port")
-    xml_port.setAttribute("type", f"P{nplayer}_{mapping}")
+    xml_port.setAttribute("type", "P{}_{}".format(nplayer, mapping))
     xml_newseq = config.createElement("newseq")
     xml_newseq.setAttribute("type", "standard")
     xml_port.appendChild(xml_newseq)
     keyval = input2definition(pad, key, input, padindex + 1, reversed, altButtons, False, isWheel)
     if mapping in gunmappings:
-        keyval = keyval + f" OR GUNCODE_{nplayer}_{gunmappings[mapping]}"
+        keyval = keyval + " OR GUNCODE_{}_{}".format(nplayer, gunmappings[mapping])
         if gunmappings[mapping] == "BUTTON2" and pedalkey is not None:
-            keyval += f" OR KEYCODE_{pedalkey.upper()}"
+            keyval += " OR KEYCODE_" + pedalkey.upper()
     if mapping in mousemappings:
         if multiMouse:
-            keyval = keyval + f" OR MOUSECODE_{nplayer}_{mousemappings[mapping]}"
+            keyval = keyval + " OR MOUSECODE_{}_{}".format(nplayer, mousemappings[mapping])
         else:
-            keyval = keyval + f" OR MOUSECODE_1_{mousemappings[mapping]}"
+            keyval = keyval + " OR MOUSECODE_1_{}".format(mousemappings[mapping])
     value = config.createTextNode(keyval)
     xml_newseq.appendChild(value)
     return xml_port
@@ -355,15 +354,15 @@ def generateGunPortElement(config: minidom.Document, nplayer: int, mapping: str,
     if mapping in ["START", "COIN"]:
         xml_port.setAttribute("type", mapping+str(nplayer))
     else:
-        xml_port.setAttribute("type", f"P{nplayer}_{mapping}")
+        xml_port.setAttribute("type", "P{}_{}".format(nplayer, mapping))
     xml_newseq = config.createElement("newseq")
     xml_newseq.setAttribute("type", "standard")
     xml_port.appendChild(xml_newseq)
     keyval = None
     if mapping in gunmappings:
-        keyval = f"GUNCODE_{nplayer}_{gunmappings[mapping]}"
+        keyval = "GUNCODE_{}_{}".format(nplayer, gunmappings[mapping])
         if gunmappings[mapping] == "BUTTON2" and pedalkey is not None:
-            keyval += f" OR KEYCODE_{pedalkey.upper()}"
+            keyval += " OR KEYCODE_" + pedalkey.upper()
     if keyval is None:
         return None
     value = config.createTextNode(keyval)
@@ -382,16 +381,16 @@ def generateSpecialPortElementPlayer(pad: Controller, config: minidom.Document, 
     xml_port.appendChild(xml_newseq)
     keyval = input2definition(pad, key, input, padindex + 1, reversed, 0)
     if mapping == "COIN" and nplayer <= 4:
-        keyval = keyval + f" OR KEYCODE_{nplayer}_{nplayer + 4}" # 5 for player 1, 6 for player 2, 7 for player 3 and 8 for player 4
+        keyval = keyval + " OR KEYCODE_{}_{}".format(nplayer, str(nplayer + 4)) # 5 for player 1, 6 for player 2, 7 for player 3 and 8 for player 4
     if mapping in gunmappings:
-        keyval = keyval + f" OR GUNCODE_{nplayer}_{gunmappings[mapping]}"
+        keyval = keyval + " OR GUNCODE_{}_{}".format(nplayer, gunmappings[mapping])
         if gunmappings[mapping] == "BUTTON2" and pedalkey is not None:
-            keyval += f" OR KEYCODE_{pedalkey.upper()}"
+            keyval += " OR KEYCODE_" + pedalkey.upper()
     if mapping in mousemappings:
         if multiMouse:
-            keyval = keyval + f" OR MOUSECODE_{nplayer}_{mousemappings[mapping]}"
+            keyval = keyval + " OR MOUSECODE_{}_{}".format(nplayer, mousemappings[mapping])
         else:
-            keyval = keyval + f" OR MOUSECODE_1_{mousemappings[mapping]}"
+            keyval = keyval + " OR MOUSECODE_1_{}".format(mousemappings[mapping])
     value = config.createTextNode(keyval)
     xml_newseq.appendChild(value)
     return xml_port
@@ -420,7 +419,7 @@ def generateComboPortElement(pad: Controller, config: minidom.Document, tag: str
     xml_newseq = config.createElement("newseq")
     xml_newseq.setAttribute("type", "standard")
     xml_port.appendChild(xml_newseq)
-    value = config.createTextNode(f"KEYCODE_{kbkey} OR {input2definition(pad, key, input, padindex + 1, reversed, 0)}")
+    value = config.createTextNode("KEYCODE_{} OR ".format(kbkey) + input2definition(pad, key, input, padindex + 1, reversed, 0))
     xml_newseq.appendChild(value)
     return xml_port
 
@@ -448,7 +447,7 @@ def generateAnalogPortElement(pad: Controller, config: minidom.Document, tag: st
     if axis == '':
         stdvalue = config.createTextNode("NONE")
     else:
-        stdvalue = config.createTextNode(f"JOYCODE_{padindex + 1}_{axis}")
+        stdvalue = config.createTextNode("JOYCODE_{}_{}".format(padindex + 1, axis))
     xml_newseq_std.appendChild(stdvalue)
     return xml_port
 
@@ -590,13 +589,13 @@ def addCommonPlayerPorts(config, xml_input, nplayer):
     for axis in ["X", "Y"]:
         nanalog = 1 if axis == "X" else 2
         xml_port = config.createElement("port")
-        xml_port.setAttribute("tag", f":mainpcb:ANALOG{nanalog}")
-        xml_port.setAttribute("type", f"P{nplayer}_AD_STICK_{axis}")
+        xml_port.setAttribute("tag", ":mainpcb:ANALOG{}".format(nanalog))
+        xml_port.setAttribute("type", "P{}_AD_STICK_{}".format(nplayer, axis))
         xml_port.setAttribute("mask", "255")
         xml_port.setAttribute("defvalue", "128")
         xml_newseq = config.createElement("newseq")
         xml_newseq.setAttribute("type", "standard")
         xml_port.appendChild(xml_newseq)
-        value = config.createTextNode(f"GUNCODE_{nplayer}_{axis}AXIS")
+        value = config.createTextNode("GUNCODE_{}_{}AXIS".format(nplayer, axis))
         xml_newseq.appendChild(value)
         xml_input.appendChild(xml_port)

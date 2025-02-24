@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from ...controller import ControllerMapping
     from ...Emulator import Emulator
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 _RPCS3_INPUT_DIR: Final = RPCS3_CONFIG_DIR / "input_configs" / "global"
 
@@ -72,10 +72,10 @@ def generateControllerConfig(system: Emulator, controllers: ControllerMapping, r
     f = codecs.open(str(configFileName), "w", encoding="utf_8_sig")
     for controller, pad in sorted(controllers.items()):
         if nplayer <= 7:
-            _logger.debug("Controller #%s - %s", nplayer, pad.guid)
+            eslog.debug(f"Controller #{nplayer} - {pad.guid}")
             # check for DualShock / DualSense
             if pad.guid in valid_sony_guids and f"rpcs3_controller{nplayer}" in system.config and system.config[f"rpcs3_controller{nplayer}"] == "Sony":
-                _logger.debug("*** Using DualShock / DualSense configuration ***")
+                eslog.debug("*** Using DualShock / DualSense configuration ***")
                 # dualshock 3
                 if pad.guid in valid_sony_guids[:4]:
                     f.write(f'Player {nplayer} Input:\n')
@@ -175,7 +175,7 @@ def generateControllerConfig(system: Emulator, controllers: ControllerMapping, r
                 f.write('    Product ID: 616\n')
                 f.write('  Buddy Device: ""\n')
             elif f"rpcs3_controller{nplayer}" in system.config and system.config[f"rpcs3_controller{nplayer}"] == "Evdev":
-                _logger.debug("*** Using EVDEV configuration ***")
+                eslog.debug("*** Using EVDEV configuration ***")
                 # evdev
                 f.write(f'Player {nplayer} Input:\n')
                 f.write('  Handler: Evdev\n')
@@ -275,7 +275,7 @@ def generateControllerConfig(system: Emulator, controllers: ControllerMapping, r
                 f.write('    Product ID: 616\n')
                 f.write('  Buddy Device: ""\n')
             else:
-                _logger.debug("*** Using default SDL2 configuration ***")
+                eslog.debug("*** Using default SDL2 configuration ***")
                 f.write(f'Player {nplayer} Input:\n')
                 f.write(f'  Handler: SDL\n')
                 # workaround controllers with commas in their name - like Nintendo

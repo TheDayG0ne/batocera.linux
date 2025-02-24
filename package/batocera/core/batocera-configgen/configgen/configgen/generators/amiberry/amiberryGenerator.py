@@ -15,7 +15,7 @@ from ..libretro import libretroControllers
 if TYPE_CHECKING:
     from ...types import HotkeysContext
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 _CONFIG_DIR: Final = CONFIGS / 'amiberry'
 _CONFIG: Final = _CONFIG_DIR / 'conf' / 'amiberry.conf'
@@ -51,7 +51,7 @@ class AmiberryGenerator(Generator):
         amiberryconf.write()
 
         romType = self.getRomType(rom)
-        _logger.debug("romType: %s", romType)
+        eslog.debug("romType: "+romType)
         if romType != 'UNKNOWN' :
             commandArray: list[str | Path] = [ "/usr/bin/amiberry", "-G" ]
             if romType != 'WHDL' :
@@ -63,9 +63,9 @@ class AmiberryGenerator(Generator):
                 commandArray.append(rom)
             elif romType == 'HDF' :
                 commandArray.append("-s")
-                commandArray.append(f"hardfile2=rw,DH0:{rom},32,1,2,512,0,,uae0")
+                commandArray.append("hardfile2=rw,DH0:"+rom+",32,1,2,512,0,,uae0")
                 commandArray.append("-s")
-                commandArray.append(f"uaehf0=hdf,rw,DH0:{rom},32,1,2,512,0,,uae0")
+                commandArray.append("uaehf0=hdf,rw,DH0:"+rom+",32,1,2,512,0,,uae0")
             elif romType == 'CD' :
                 commandArray.append("--cdimage")
                 commandArray.append(rom)
@@ -74,14 +74,14 @@ class AmiberryGenerator(Generator):
                 n = 0
                 for img in self.floppiesFromRom(rom):
                     if n < 4:
-                        commandArray.append(f"-{n}")
+                        commandArray.append("-" + str(n))
                         commandArray.append(img)
                     n += 1
                 # floppy path
                 commandArray.append("-s")
                 # Use disk folder as floppy path
                 romPathIndex = rom.rfind('/')
-                commandArray.append(f"amiberry.floppy_path={rom[0:romPathIndex]}")
+                commandArray.append("amiberry.floppy_path="+rom[0:romPathIndex])
 
             # controller
             libretroControllers.writeControllersConfig(retroconfig, system, playersControllers, True)
@@ -91,7 +91,7 @@ class AmiberryGenerator(Generator):
 
             nplayer = 1
             for playercontroller, pad in sorted(playersControllers.items()):
-                replacements = {f'_player{nplayer}_':'_'}
+                replacements = {'_player' + str(nplayer) + '_':'_'}
                 # amiberry remove / included in pads names like "USB Downlo01.80 PS3/USB Corded Gamepad"
                 padfilename = pad.real_name.replace("/", "")
                 playerInputFilename = _RETROARCH_INPUTS_DIR / f"{padfilename}.cfg"
@@ -103,13 +103,13 @@ class AmiberryGenerator(Generator):
                                 outfile.write(newline)
                 if nplayer == 1: # 1 = joystick port
                     commandArray.append("-s")
-                    commandArray.append(f"joyport1_friendlyname={padfilename}")
+                    commandArray.append("joyport1_friendlyname=" + padfilename)
                     if romType == 'CD' :
                         commandArray.append("-s")
                         commandArray.append("joyport1_mode=cd32joy")
                 if nplayer == 2: # 0 = mouse for the player 2
                     commandArray.append("-s")
-                    commandArray.append(f"joyport0_friendlyname={padfilename}")
+                    commandArray.append("joyport0_friendlyname=" + padfilename)
                 nplayer += 1
 
             # fps
@@ -264,7 +264,7 @@ class AmiberryGenerator(Generator):
                         if extension == "info":
                             return 'WHDL'
                         elif extension == 'lha' :
-                            _logger.warning("Amiberry doesn't support .lha inside a .zip")
+                            eslog.warning("Amiberry doesn't support .lha inside a .zip")
                             return 'UNKNOWN'
                         elif extension == 'adf' :
                             return 'DISK'

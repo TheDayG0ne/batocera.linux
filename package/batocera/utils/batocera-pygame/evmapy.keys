@@ -109,6 +109,11 @@
         {
             "trigger": "joystick2",
             "type": "mouse"
-        }
+        },
+	{
+            "trigger": ["hotkey", "start"],
+            "type": "exec",
+            "target": "killall -15 pygame"
+	}
     ]
 }

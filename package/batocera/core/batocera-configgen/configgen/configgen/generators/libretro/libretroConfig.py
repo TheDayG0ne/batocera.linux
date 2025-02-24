@@ -25,10 +25,9 @@ if TYPE_CHECKING:
     from ...controller import ControllerMapping
     from ...Emulator import Emulator
     from ...generators.Generator import Generator
-    from ...gun import Gun, GunMapping
-    from ...types import DeviceInfoMapping, Resolution
+    from ...types import DeviceInfoMapping, GunMapping, Resolution
 
-_logger = logging.getLogger(__name__)
+eslog = logging.getLogger(__name__)
 
 
 # Return value for es invertedbuttons
@@ -45,7 +44,7 @@ def getInvertButtonsValue() -> bool:
         return False # when file is not yet here or malformed
 
 # return true if the option is considered defined
-def defined(key: str, dict: Mapping[str, Any], /) -> bool:
+def defined(key: str, dict: Mapping[str, Any]) -> bool:
     return key in dict and isinstance(dict[key], str) and len(dict[key]) > 0
 
 
@@ -88,7 +87,7 @@ def connected_to_internet() -> bool:
     process = subprocess.Popen(cmd)
     process.wait()
     if process.returncode == 0:
-        _logger.debug("Connected to the internet")
+        eslog.debug("Connected to the internet")
         return True
     else:
         # Try dns.google if one.one.one.one fails
@@ -96,44 +95,17 @@ def connected_to_internet() -> bool:
         process = subprocess.Popen(cmd)
         process.wait()
         if process.returncode == 0:
-            _logger.debug("Connected to the internet")
+            eslog.debug("Connected to the internet")
             return True
         else:
-            _logger.error("Not connected to the internet")
+            eslog.error("Not connected to the internet")
             return False
 
-def writeLibretroConfig(
-    generator: Generator,
-    retroconfig: UnixSettings,
-    system: Emulator,
-    controllers: ControllerMapping,
-    metadata: Mapping[str, str],
-    guns: GunMapping,
-    wheels: DeviceInfoMapping,
-    rom: Path,
-    bezel: str | None,
-    shaderBezel: bool,
-    gameResolution: Resolution,
-    gfxBackend: str,
-    /,
-) -> None:
+def writeLibretroConfig(generator: Generator, retroconfig: UnixSettings, system: Emulator, controllers: ControllerMapping, metadata: Mapping[str, str], guns: GunMapping, wheels: DeviceInfoMapping, rom: Path, bezel: str | None, shaderBezel: bool, gameResolution: Resolution, gfxBackend: str) -> None:
     writeLibretroConfigToFile(retroconfig, createLibretroConfig(generator, system, controllers, metadata, guns, wheels, rom, bezel, shaderBezel, gameResolution, gfxBackend))
 
 # Take a system, and returns a dict of retroarch.cfg compatible parameters
-def createLibretroConfig(
-    generator: Generator,
-    system: Emulator,
-    controllers: ControllerMapping,
-    metadata: Mapping[str, str],
-    guns: GunMapping,
-    wheels: DeviceInfoMapping,
-    rom: Path,
-    bezel: str | None,
-    shaderBezel: bool,
-    gameResolution: Resolution,
-    gfxBackend: str,
-    /,
-) -> dict[str, object]:
+def createLibretroConfig(generator: Generator, system: Emulator, controllers: ControllerMapping, metadata: Mapping[str, str], guns: GunMapping, wheels: DeviceInfoMapping, rom: Path, bezel: str | None, shaderBezel: bool, gameResolution: Resolution, gfxBackend: str) -> dict[str, object]:
 
     # retroarch-core-options.cfg
     mkdir_if_not_exists(RETROARCH_CORE_CUSTOM.parent)
@@ -168,24 +140,22 @@ def createLibretroConfig(
     retroarchConfig['menu_show_restart_retroarch'] = 'false'      # this option messes everything up on Batocera if ever clicked
     retroarchConfig['menu_show_load_content_animation'] = 'false' # hide popup when starting a game
     retroarchConfig['menu_swap_ok_cancel_buttons'] = swapButtons  # Set the correct value to match ES confirm /cancel inputs
-    retroarchConfig["video_viewport_bias_x"] = "0.500000"
-    retroarchConfig["video_viewport_bias_y"] = "0.500000"
 
-    retroarchConfig['video_driver'] = f'"{gfxBackend}"'  # needed for the ozone menu
+    retroarchConfig['video_driver'] = '"' + gfxBackend + '"'  # needed for the ozone menu
     # Set Vulkan
     if system.isOptSet("gfxbackend") and system.config["gfxbackend"] == "vulkan":
         if vulkan.is_available():
-            _logger.debug("Vulkan driver is available on the system.")
+            eslog.debug("Vulkan driver is available on the system.")
             if vulkan.has_discrete_gpu():
-                _logger.debug("A discrete GPU is available on the system. We will use that for performance")
+                eslog.debug("A discrete GPU is available on the system. We will use that for performance")
                 discrete_index = vulkan.get_discrete_gpu_index()
                 if discrete_index:
-                    _logger.debug("Using Discrete GPU Index: %s for RetroArch", discrete_index)
+                    eslog.debug("Using Discrete GPU Index: {} for RetroArch".format(discrete_index))
                     retroarchConfig["vulkan_gpu_index"] = f'"{discrete_index}"'
                 else:
-                    _logger.debug("Couldn't get discrete GPU index")
+                    eslog.debug("Couldn't get discrete GPU index")
             else:
-                _logger.debug("Discrete GPU is not available on the system. Using default.")
+                eslog.debug("Discrete GPU is not available on the system. Using default.")
 
     retroarchConfig['audio_driver'] = '"pulse"'
     if (system.isOptSet("audio_driver")):
@@ -375,11 +345,11 @@ def createLibretroConfig(
             for controller, pad in sorted(controllers.items()):
                 if pad.device_path in deviceInfos:
                     if deviceInfos[pad.device_path]["isWheel"]:
-                        retroarchConfig[f'input_player{nplayer}_analog_dpad_mode'] = '1'
+                        retroarchConfig['input_player' + str(nplayer) + '_analog_dpad_mode'] = '1'
                         if "wheel_type" in metadata and metadata["wheel_type"] == "negcon" :
-                            retroarchConfig[f'input_libretro_device_p{nplayer}'] = 773 # Negcon
+                            retroarchConfig['input_libretro_device_p' + str(nplayer)] = 773 # Negcon
                         else:
-                            retroarchConfig[f'input_libretro_device_p{nplayer}'] = 517 # DualShock Controller
+                            retroarchConfig['input_libretro_device_p' + str(nplayer)] = 517 # DualShock Controller
                 nplayer += 1
 
     ## Sega Dreamcast controller
@@ -439,7 +409,7 @@ def createLibretroConfig(
         "Retro Bit Bluetooth Controller",
         ]
 
-        def update_megadrive_controller_config(controller_number: int, /):
+        def update_megadrive_controller_config(controller_number):
             # Remaps for Megadrive style controllers
             remap_values = {
                 'btn_a': '0', 'btn_b': '1', 'btn_x': '9', 'btn_y': '10',
@@ -584,7 +554,7 @@ def createLibretroConfig(
             "8BitDo N64 Modkit",
         ]
 
-        def update_n64_controller_config(controller_number: int, /):
+        def update_n64_controller_config(controller_number):
             # Remaps for N64 style controllers
             remap_values = {
                 'btn_a': '1', 'btn_b': '0', 'btn_x': '23', 'btn_y': '21',
@@ -824,7 +794,7 @@ def createLibretroConfig(
         # Connect as client
         if system.config['netplay.mode'] == 'client':
             if 'netplay.password' in system.config:
-                retroarchConfig['netplay_password'] = f'"{systemConfig.get("netplay.password", "")}"'
+                retroarchConfig['netplay_password'] = '"' + systemConfig.get("netplay.password", "") + '"'
             else:
                 retroarchConfig['netplay_password'] = ""
 
@@ -832,7 +802,7 @@ def createLibretroConfig(
         if system.config['netplay.mode'] == 'spectator':
             retroarchConfig['netplay_start_as_spectator'] = "true"
             if 'netplay.password' in system.config:
-                retroarchConfig['netplay_spectate_password'] = f'"{systemConfig.get("netplay.password", "")}"'
+                retroarchConfig['netplay_spectate_password'] = '"' + systemConfig.get("netplay.password", "") + '"'
             else:
                 retroarchConfig['netplay_spectate_password'] = ""
         else:
@@ -840,8 +810,8 @@ def createLibretroConfig(
 
          # Netplay host passwords
         if system.config['netplay.mode'] == 'host':
-            retroarchConfig['netplay_password'] = f'"{systemConfig.get("netplay.password", "")}"'
-            retroarchConfig['netplay_spectate_password'] = f'"{systemConfig.get("netplay.spectatepassword", "")}"'
+            retroarchConfig['netplay_password'] = '"' + systemConfig.get("netplay.password", "") + '"'
+            retroarchConfig['netplay_spectate_password'] = '"' + systemConfig.get("netplay.spectatepassword", "") + '"'
 
         # Netplay hide the gameplay
         if system.isOptSet('netplay_public_announce') and system.getOptBoolean('netplay_public_announce') == False:
@@ -898,9 +868,9 @@ def createLibretroConfig(
         else:
             chosen_lang='En'
         if system.isOptSet('ai_service_url') and system.config['ai_service_url']:
-            retroarchConfig['ai_service_url'] = f"{system.config['ai_service_url']}&mode=Fast&output=png&target_lang={chosen_lang}"
+            retroarchConfig['ai_service_url'] = system.config['ai_service_url']+'&mode=Fast&output=png&target_lang='+chosen_lang
         else:
-            retroarchConfig['ai_service_url'] = f'http://ztranslate.net/service?api_key=BATOCERA&mode=Fast&output=png&target_lang={chosen_lang}'
+            retroarchConfig['ai_service_url'] = 'http://ztranslate.net/service?api_key=BATOCERA&mode=Fast&output=png&target_lang='+chosen_lang
         if system.isOptSet('ai_service_pause') and system.getOptBoolean('ai_service_pause') == True:
             retroarchConfig['ai_service_pause'] = 'true'
         else:
@@ -962,25 +932,25 @@ def createLibretroConfig(
             # overwrite configuration by gungames.xml
             if "gameDependant" in ragunconf:
                 for gd in ragunconf["gameDependant"]:
-                    if f'gun_{gd["key"]}' in metadata and metadata[f'gun_{gd["key"]}'] == gd["value"] and "mapkey" in gd and "mapvalue" in gd:
+                    if "gun_"+gd["key"] in metadata and metadata["gun_"+gd["key"]] == gd["value"] and "mapkey" in gd and "mapvalue" in gd:
                         ragunconf[gd["mapkey"]] = gd["mapvalue"]
-                    if f'gun_{gd["key"]}' in metadata and metadata[f'gun_{gd["key"]}'] == gd["value"] and "mapcorekey" in gd and "mapcorevalue" in gd:
+                    if "gun_"+gd["key"] in metadata and metadata["gun_"+gd["key"]] == gd["value"] and "mapcorekey" in gd and "mapcorevalue" in gd:
                         raguncoreconf[gd["mapcorekey"]] = gd["mapcorevalue"]
 
             for nplayer in range(1, 3+1):
-                if f"p{nplayer}" in ragunconf and len(guns)-1 >= ragunconf[f"p{nplayer}"]:
-                    if f"device_p{nplayer}" in ragunconf:
-                        retroarchConfig[f'input_libretro_device_p{nplayer}'] = ragunconf[f"device_p{nplayer}"]
+                if "p"+str(nplayer) in ragunconf and len(guns)-1 >= ragunconf["p"+str(nplayer)]:
+                    if "device_p"+str(nplayer) in ragunconf:
+                        retroarchConfig['input_libretro_device_p'+str(nplayer)] = ragunconf["device_p"+str(nplayer)]
                     else:
                         if "device" in ragunconf:
-                            retroarchConfig[f'input_libretro_device_p{nplayer}'] = ragunconf["device"]
+                            retroarchConfig['input_libretro_device_p'+str(nplayer)] = ragunconf["device"]
                         else:
-                            retroarchConfig[f'input_libretro_device_p{nplayer}'] = ""
-                    configureGunInputsForPlayer(nplayer, guns[ragunconf[f"p{nplayer}"]], controllers, retroarchConfig, system.config['core'], metadata, system)
+                            retroarchConfig['input_libretro_device_p'+str(nplayer)] = ""
+                    configureGunInputsForPlayer(nplayer, guns[ragunconf["p"+str(nplayer)]], controllers, retroarchConfig, system.config['core'], metadata, system)
 
             # override core settings
             for key in raguncoreconf:
-                coreSettings.save(key, f'"{raguncoreconf[key]}"')
+                coreSettings.save(key, '"' + raguncoreconf[key] + '"')
 
             # hide the mouse pointer with gun games
             retroarchConfig['input_overlay_show_mouse_cursor'] = "false"
@@ -992,11 +962,11 @@ def createLibretroConfig(
 
     # Bezel option
     try:
-        writeBezelConfig(generator, bezel, shaderBezel, retroarchConfig, rom, gameResolution, system, system.guns_borders_size_name(guns), system.guns_border_ratio_type(guns))
+        writeBezelConfig(generator, bezel, shaderBezel, retroarchConfig, rom, gameResolution, system, controllersConfig.gunsBordersSizeName(guns, system.config), controllersConfig.gunsBorderRatioType(guns, system.config))
     except Exception as e:
         # error with bezels, disabling them
-        writeBezelConfig(generator, None, shaderBezel, retroarchConfig, rom, gameResolution, system, system.guns_borders_size_name(guns), system.guns_border_ratio_type(guns))
-        _logger.error("Error with bezel %s: %s", bezel, e, exc_info=e, stack_info=True)
+        writeBezelConfig(generator, None, shaderBezel, retroarchConfig, rom, gameResolution, system, controllersConfig.gunsBordersSizeName(guns, system.config), controllersConfig.gunsBorderRatioType(guns, system.config))
+        eslog.error(f"Error with bezel {bezel}: {e}", exc_info=e, stack_info=True)
 
     # custom : allow the user to configure directly retroarch.cfg via batocera.conf via lines like : snes.retroarch.menu_driver=rgui
     for user_config in systemConfig:
@@ -1005,26 +975,18 @@ def createLibretroConfig(
 
     return retroarchConfig
 
-def clearGunInputsForPlayer(n: int, retroarchConfig: dict[str, object], /) -> None:
+def clearGunInputsForPlayer(n: int, retroarchConfig: dict[str, object]) -> None:
     # mapping
     keys = [ "gun_trigger", "gun_offscreen_shot", "gun_aux_a", "gun_aux_b", "gun_aux_c", "gun_start", "gun_select", "gun_dpad_up", "gun_dpad_down", "gun_dpad_left", "gun_dpad_right" ]
     for key in keys:
         for type in ["btn", "mbtn"]:
-            retroarchConfig[f'input_player{n}_{key}_{type}'] = ''
+            retroarchConfig['input_player{}_{}_{}'.format(n, key, type)] = ''
 
-def configureGunInputsForPlayer(
-    n: int,
-    gun: Gun,
-    controllers: ControllerMapping,
-    retroarchConfig: dict[str, object],
-    core: str,
-    metadata: Mapping[str, str],
-    system: Emulator,
-    /,
-) -> None:
+def configureGunInputsForPlayer(n, gun, controllers, retroarchConfig, core, metadata, system):
+
     # find a keyboard key to simulate the action of the player (always like button 2) ; search in batocera.conf, else default config
     pedalsKeys = {1: "c", 2: "v", 3: "b", 4: "n"}
-    pedalcname = f"controllers.pedals{n}"
+    pedalcname = "controllers.pedals{}".format(n)
     pedalkey = None
     if pedalcname in system.config:
         pedalkey = system.config[pedalcname]
@@ -1034,99 +996,99 @@ def configureGunInputsForPlayer(
     pedalconfig = None
 
     # gun mapping
-    retroarchConfig[f'input_player{n}_mouse_index'            ] = gun.mouse_index
-    retroarchConfig[f'input_player{n}_gun_trigger_mbtn'       ] = 1
-    retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = 2
-    pedalconfig = f'input_player{n}_gun_offscreen_shot'
-    retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = 3
+    retroarchConfig['input_player{}_mouse_index'            .format(n)] = gun["id_mouse"]
+    retroarchConfig['input_player{}_gun_trigger_mbtn'       .format(n)] = 1
+    retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = 2
+    pedalconfig = 'input_player{}_gun_offscreen_shot'.format(n)
+    retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = 3
 
-    retroarchConfig[f'input_player{n}_gun_select_mbtn'        ] = 4
-    retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 5
-    retroarchConfig[f'input_player{n}_gun_aux_b_mbtn'         ] = 6
-    retroarchConfig[f'input_player{n}_gun_aux_c_mbtn'         ] = 7
-    retroarchConfig[f'input_player{n}_gun_dpad_up_mbtn'       ] = 8
-    retroarchConfig[f'input_player{n}_gun_dpad_down_mbtn'     ] = 9
-    retroarchConfig[f'input_player{n}_gun_dpad_left_mbtn'     ] = 10
-    retroarchConfig[f'input_player{n}_gun_dpad_right_mbtn'    ] = 11
+    retroarchConfig['input_player{}_gun_select_mbtn'        .format(n)] = 4
+    retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 5
+    retroarchConfig['input_player{}_gun_aux_b_mbtn'         .format(n)] = 6
+    retroarchConfig['input_player{}_gun_aux_c_mbtn'         .format(n)] = 7
+    retroarchConfig['input_player{}_gun_dpad_up_mbtn'       .format(n)] = 8
+    retroarchConfig['input_player{}_gun_dpad_down_mbtn'     .format(n)] = 9
+    retroarchConfig['input_player{}_gun_dpad_left_mbtn'     .format(n)] = 10
+    retroarchConfig['input_player{}_gun_dpad_right_mbtn'    .format(n)] = 11
 
     # custom mapping by core to match more with avaible gun batocera buttons
     # different mapping for ps1 which has only 3 buttons and maps on aux_a and aux_b not available on all guns
     if core == "pcsx_rearmed":
         if "gun_type" in metadata and metadata["gun_type"] == "justifier":
-            retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-            retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 2
-            pedalconfig = f'input_player{n}_gun_aux_a'
+            retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+            retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 2
+            pedalconfig = 'input_player{}_gun_aux_a'.format(n)
         else:
-            retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-            retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = ''
-            retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 2
-            pedalconfig = f'input_player{n}_gun_aux_a'
-            retroarchConfig[f'input_player{n}_gun_aux_b_mbtn'         ] = 3
+            retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+            retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = ''
+            retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 2
+            pedalconfig = 'input_player{}_gun_aux_a'.format(n)
+            retroarchConfig['input_player{}_gun_aux_b_mbtn'         .format(n)] = 3
 
     if core == "fbneo":
-        retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-        retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 2
-        pedalconfig = f'input_player{n}_gun_aux_a'
+        retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+        retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 2
+        pedalconfig = 'input_player{}_gun_aux_a'.format(n)
 
     if core == "snes9x":
         if "gun_type" in metadata and metadata["gun_type"] == "justifier":
-            retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-            retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = 2
-            pedalconfig = f'input_player{n}_gun_start'
+            retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+            retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = 2
+            pedalconfig = 'input_player{}_gun_start'.format(n)
         else:
-            retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-            retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = ''
-            retroarchConfig[f'input_player{n}_gun_select_mbtn'        ] = ''
-            retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 2
-            pedalconfig = f'input_player{n}_gun_aux_a'
-            retroarchConfig[f'input_player{n}_gun_aux_b_mbtn'         ] = 3
-            retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = 4
+            retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+            retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = ''
+            retroarchConfig['input_player{}_gun_select_mbtn'        .format(n)] = ''
+            retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 2
+            pedalconfig = 'input_player{}_gun_aux_a'.format(n)
+            retroarchConfig['input_player{}_gun_aux_b_mbtn'         .format(n)] = 3
+            retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = 4
 
     if core == "genesisplusgx":
-        retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-        retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = ''
-        retroarchConfig[f'input_player{n}_gun_select_mbtn'        ] = ''
-        retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 2
-        pedalconfig = f'input_player{n}_gun_aux_a'
-        retroarchConfig[f'input_player{n}_gun_aux_b_mbtn'         ] = 3
-        retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = 4
+        retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+        retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = ''
+        retroarchConfig['input_player{}_gun_select_mbtn'        .format(n)] = ''
+        retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 2
+        pedalconfig = 'input_player{}_gun_aux_a'.format(n)
+        retroarchConfig['input_player{}_gun_aux_b_mbtn'         .format(n)] = 3
+        retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = 4
 
     if core == "flycast":
-        if system.isOptSet('flycast_offscreen_reload') and system.getOptBoolean('flycast_offscreen_reload'):
-            retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = ''
-            retroarchConfig[f'input_player{n}_gun_select_mbtn'        ] = ''
-            retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = ''
-            retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 3
-            retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = 4
-            retroarchConfig[f'input_player{n}_gun_select_mbtn'        ] = 5
+        if system.isOptSet('flycast_offscreen_reload') and system.getOptBoolean('flycast_offscreen_reload') == 1:
+            retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = ''
+            retroarchConfig['input_player{}_gun_select_mbtn'        .format(n)] = ''
+            retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = ''
+            retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 3
+            retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = 4
+            retroarchConfig['input_player{}_gun_select_mbtn'        .format(n)] = 5
         else:
-            retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-            retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 2
-            pedalconfig = f'input_player{n}_gun_aux_a'
+            retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+            retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 2
+            pedalconfig = 'input_player{}_gun_aux_a'.format(n)
 
     if core == "mame":
-        retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-        retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = ''
-        retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 2
-        pedalconfig = f'input_player{n}_gun_aux_a'
-        retroarchConfig[f'input_player{n}_start_mbtn'             ] = 3
-        retroarchConfig[f'input_player{n}_select_mbtn'            ] = 4
+        retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+        retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = ''
+        retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 2
+        pedalconfig = 'input_player{}_gun_aux_a'.format(n)
+        retroarchConfig['input_player{}_start_mbtn'             .format(n)] = 3
+        retroarchConfig['input_player{}_select_mbtn'            .format(n)] = 4
 
     if core == "mame078plus":
-        retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-        retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = ''
-        retroarchConfig[f'input_player{n}_gun_select_mbtn'        ] = ''
-        retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = ''
-        retroarchConfig[f'input_player{n}_gun_aux_b_mbtn'         ] = ''
-        retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = 3
-        retroarchConfig[f'input_player{n}_gun_select_mbtn'        ] = 4
+        retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+        retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = ''
+        retroarchConfig['input_player{}_gun_select_mbtn'        .format(n)] = ''
+        retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = ''
+        retroarchConfig['input_player{}_gun_aux_b_mbtn'         .format(n)] = ''
+        retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = 3
+        retroarchConfig['input_player{}_gun_select_mbtn'        .format(n)] = 4
 
     if core == "swanstation":
-        retroarchConfig[f'input_player{n}_gun_offscreen_shot_mbtn'] = ''
-        retroarchConfig[f'input_player{n}_gun_start_mbtn'         ] = ''
-        retroarchConfig[f'input_player{n}_gun_aux_a_mbtn'         ] = 2
-        pedalconfig = f'input_player{n}_gun_aux_a'
-        retroarchConfig[f'input_player{n}_gun_aux_b_mbtn'         ] = 3
+        retroarchConfig['input_player{}_gun_offscreen_shot_mbtn'.format(n)] = ''
+        retroarchConfig['input_player{}_gun_start_mbtn'         .format(n)] = ''
+        retroarchConfig['input_player{}_gun_aux_a_mbtn'         .format(n)] = 2
+        pedalconfig = 'input_player{}_gun_aux_a'.format(n)
+        retroarchConfig['input_player{}_gun_aux_b_mbtn'         .format(n)] = 3
 
     # pedal
     if pedalconfig is not None and pedalkey is not None:
@@ -1155,32 +1117,21 @@ def configureGunInputsForPlayer(
             for m in mapping:
                 if mapping[m] in pad.inputs:
                     if pad.inputs[mapping[m]].type == "button":
-                        retroarchConfig[f'input_player{n}_{m}_btn'] = pad.inputs[mapping[m]].id
+                        retroarchConfig['input_player{}_{}_btn'.format(n, m)] = pad.inputs[mapping[m]].id
                     elif pad.inputs[mapping[m]].type == "hat":
-                        retroarchConfig[f'input_player{n}_{m}_btn'] = f"h0{hatstoname[pad.inputs[mapping[m]].value]}"
+                        retroarchConfig['input_player{}_{}_btn'.format(n, m)] = "h0" + hatstoname[pad.inputs[mapping[m]].value]
                     elif pad.inputs[mapping[m]].type == "axis":
                         aval = "+"
                         if int(pad.inputs[mapping[m]].value) < 0:
                             aval = "-"
-                        retroarchConfig[f'input_player{n}_{m}_axis'] = aval + pad.inputs[mapping[m]].id
+                        retroarchConfig['input_player{}_{}_axis'.format(n, m)] = aval + pad.inputs[mapping[m]].id
         nplayer += 1
 
-def writeLibretroConfigToFile(retroconfig: UnixSettings, config: Mapping[str, object], /) -> None:
+def writeLibretroConfigToFile(retroconfig: UnixSettings, config: Mapping[str, object]) -> None:
     for setting in config:
         retroconfig.save(setting, config[setting])
 
-def writeBezelConfig(
-    generator: Generator,
-    bezel: str | None,
-    shaderBezel: bool,
-    retroarchConfig: dict[str, object],
-    rom: Path,
-    gameResolution: Resolution,
-    system: Emulator,
-    gunsBordersSize: str | None,
-    gunsBordersRatio: str | None,
-    /,
-) -> None:
+def writeBezelConfig(generator: Generator, bezel: str | None, shaderBezel: bool, retroarchConfig: dict[str, object], rom: Path, gameResolution: Resolution, system: Emulator, gunsBordersSize: str | None, gunsBordersRatio: str | None) -> None:
     # disable the overlay
     # if all steps are passed, enable them
     retroarchConfig['input_overlay_hide_in_menu'] = "false"
@@ -1190,16 +1141,18 @@ def writeBezelConfig(
     retroarchConfig['input_overlay_enable'] = "false"
     retroarchConfig['video_message_pos_x']  = 0.05
     retroarchConfig['video_message_pos_y']  = 0.05
+    retroarchConfig['video_viewport_bias_x'] = 0.5
+    retroarchConfig['video_viewport_bias_y'] = 0.5
 
     # special text...
     if bezel == "none" or bezel == "":
         bezel = None
 
-    _logger.debug("libretro bezel: %s", bezel)
+    eslog.debug("libretro bezel: {}".format(bezel))
 
     # create a fake bezel if guns need it
     if bezel is None and gunsBordersSize is not None:
-        _logger.debug("guns need border")
+        eslog.debug("guns need border")
         gunBezelFile     = Path("/tmp/bezel_gun_black.png")
         gunBezelInfoFile = Path("/tmp/bezel_gun_black.info")
 
@@ -1219,7 +1172,7 @@ def writeBezelConfig(
             right = left
 
         with gunBezelInfoFile.open("w") as fd:
-            fd.write(f'{{ "width":{w}, "height":{h}, "top":{top}, "left":{left}, "bottom":{bottom}, "right":{right}, "opacity":1.0000000, "messagex":0.220000, "messagey":0.120000}}')
+            fd.write("{" + f' "width":{w}, "height":{h}, "top":{top}, "left":{left}, "bottom":{bottom}, "right":{right}, "opacity":1.0000000, "messagex":0.220000, "messagey":0.120000' + "}")
         bezelsUtil.createTransparentBezel(gunBezelFile, gameResolution["width"], gameResolution["height"])
         # if the game needs a specific bezel, to draw border, consider it as a specific game bezel, like for thebezelproject to avoir caches
         bz_infos = { "png": gunBezelFile, "info": gunBezelInfoFile, "layout": None, "mamezip": None, "specific_to_game": True }
@@ -1305,17 +1258,6 @@ def writeBezelConfig(
 
     retroarchConfig['input_overlay_opacity'] = infos["opacity"]
 
-    bias = True
-    if retroarchConfig["aspect_ratio_index"] == str(ratioIndexes.index("custom")):
-        bias = False
-
-    if bias:
-        retroarchConfig["video_viewport_bias_x"] = "0.500000"
-        retroarchConfig["video_viewport_bias_y"] = "0.500000"
-    else:
-        retroarchConfig["video_viewport_bias_x"] = "0.000000"
-        retroarchConfig["video_viewport_bias_y"] = "1.000000"
-
     # stretch option
     if system.isOptSet('bezel_stretch') and system.getOptBoolean('bezel_stretch') == True:
         bezel_stretch = True
@@ -1329,7 +1271,7 @@ def writeBezelConfig(
 
         # Stretch also takes care of cutting off the bezel and adapting viewport, if aspect ratio is < 16:9
         if gameResolution["width"] < infos["width"] or gameResolution["height"] < infos["height"]:
-            _logger.debug("Screen resolution smaller than bezel: forcing stretch")
+            eslog.debug("Screen resolution smaller than bezel: forcing stretch")
             bezel_stretch = True
         if bezel_game is True:
             output_png_file = Path("/tmp/bezel_per_game.png")
@@ -1342,7 +1284,7 @@ def writeBezelConfig(
             else:
                 if (not tattoo_output_png.exists()) and output_png_file.exists():
                     create_new_bezel_file = False
-                    _logger.debug("Using cached bezel file %s", output_png_file)
+                    eslog.debug(f"Using cached bezel file {output_png_file}")
                 else:
                     try:
                         tattoo_output_png.unlink()
@@ -1356,7 +1298,7 @@ def writeBezelConfig(
                 if len(fadapted) >= 10:
                     for i in range (10):
                         fadapted.pop()
-                    _logger.debug("Removing unused bezel file: %s", fadapted)
+                    eslog.debug(f"Removing unused bezel file: {fadapted}")
                     for fr in fadapted:
                         try:
                             fr.unlink()
@@ -1370,7 +1312,7 @@ def writeBezelConfig(
                 new_x = int(infos["width"]*gameRatio/viewportRatio)
                 delta = int(infos["width"]-new_x)
                 borderx = delta//2
-            _logger.debug("Bezel_stretch: need to cut off %s pixels", borderx)
+            eslog.debug(f"Bezel_stretch: need to cut off {borderx} pixels")
             retroarchConfig['custom_viewport_x']      = (infos["left"] - borderx/2) * wratio
             retroarchConfig['custom_viewport_y']      = infos["top"] * hratio
             retroarchConfig['custom_viewport_width']  = (infos["width"]  - infos["left"] - infos["right"] + borderx)  * wratio
@@ -1390,11 +1332,11 @@ def writeBezelConfig(
         if create_new_bezel_file is True:
             # Padding left and right borders for ultrawide screens (larger than 16:9 aspect ratio)
             # or up/down for 4K
-            _logger.debug("Generating a new adapted bezel file %s", output_png_file)
+            eslog.debug(f"Generating a new adapted bezel file {output_png_file}")
             try:
                 bezelsUtil.padImage(overlay_png_file, output_png_file, gameResolution["width"], gameResolution["height"], infos["width"], infos["height"], bezel_stretch)
             except Exception as e:
-                _logger.debug("Failed to create the adapated image: %s", e)
+                eslog.debug(f"Failed to create the adapated image: {e}")
                 return
         overlay_png_file = output_png_file # replace by the new file (recreated or cached in /tmp)
         if system.isOptSet('bezel.tattoo') and system.config['bezel.tattoo'] != "0":
@@ -1413,13 +1355,13 @@ def writeBezelConfig(
             overlay_png_file = tattoo_output_png
 
     if gunsBordersSize is not None:
-        _logger.debug("Draw gun borders")
+        eslog.debug("Draw gun borders")
         output_png_file = Path("/tmp/bezel_gunborders.png")
         innerSize, outerSize = bezelsUtil.gunBordersSize(gunsBordersSize)
         borderSize = bezelsUtil.gunBorderImage(overlay_png_file, output_png_file, gunsBordersRatio, innerSize, outerSize, bezelsUtil.gunsBordersColorFomConfig(system.config))
         overlay_png_file = output_png_file
 
-    _logger.debug("Bezel file set to %s", overlay_png_file)
+    eslog.debug(f"Bezel file set to {overlay_png_file}")
     writeBezelCfgConfig(RETROARCH_OVERLAY_CONFIG, overlay_png_file)
 
     # For shaders that will want to use Batocera's decoration as part of the shader instead of an overlay
@@ -1429,20 +1371,22 @@ def writeBezelConfig(
         shaderBezelFile = shaderBezelPath / 'bezel.png'
         if not shaderBezelPath.exists():
             shaderBezelPath.mkdir(parents=True)
-            _logger.debug("Creating shader bezel path %s", overlay_png_file)
+            eslog.debug("Creating shader bezel path {}".format(overlay_png_file))
         if shaderBezelFile.exists():
-            _logger.debug("Removing old shader bezel %s", shaderBezelFile)
+            eslog.debug("Removing old shader bezel {}".format(shaderBezelFile))
             shaderBezelFile.unlink()
 
         # Link bezel png file to the fixed path.
         # Shaders should use this path to find the art.
         shaderBezelFile.symlink_to(overlay_png_file)
-        _logger.debug("Symlinked bezel file %s to %s for selected shader", overlay_png_file, shaderBezelFile)
+        eslog.debug("Symlinked bezel file {} to {} for selected shader".format(overlay_png_file, shaderBezelFile))
 
-def isLowResolution(gameResolution: Resolution, /) -> bool:
+    retroarchConfig['video_viewport_bias_x'] = 0
+
+def isLowResolution(gameResolution: Resolution) -> bool:
     return gameResolution["width"] < 480 or gameResolution["height"] < 480
 
-def writeBezelCfgConfig(cfgFile: Path, overlay_png_file: Path, /) -> None:
+def writeBezelCfgConfig(cfgFile: Path, overlay_png_file: Path) -> None:
     fd = cfgFile.open("w")
     fd.write("overlays = 1\n")
     fd.write(f'overlay0_overlay = "{overlay_png_file}"\n')

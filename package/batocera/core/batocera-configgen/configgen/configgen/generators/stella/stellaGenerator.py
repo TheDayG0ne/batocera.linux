@@ -1,21 +1,14 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import logging
 
 from ... import Command
 from ...controller import generate_sdl_game_controller_config
 from ..Generator import Generator
 
-if TYPE_CHECKING:
-    from ...types import HotkeysContext
+eslog = logging.getLogger(__name__)
 
 class StellaGenerator(Generator):
-
-    def getHotkeysContext(self) -> HotkeysContext:
-        return {
-            "name": "stella",
-            "keys": { "exit": ["KEY_LEFTALT", "KEY_F4"] }
-        }
 
     def generate(self, system, rom, playersControllers, metadata, guns, wheels, gameResolution):
         # Launch Stella

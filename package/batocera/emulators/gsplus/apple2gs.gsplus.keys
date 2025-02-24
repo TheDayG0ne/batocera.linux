@@ -1,6 +1,17 @@
 {
     "actions_player1": [
         {
+            "trigger": [
+                "hotkey",
+                "start"
+            ],
+            "type": "key",
+            "target": [
+                "KEY_LEFTALT",
+                "KEY_F4"
+            ]
+        },
+        {
             "trigger": "joystick2",
             "type": "mouse"
         },
@@ -77,6 +88,14 @@
         },
         {
             "trigger": [
+                "b",
+                "hotkey"
+            ],
+            "type": "key",
+            "target": "KEY_F4"
+        },
+        {
+            "trigger": [
                 "left",
                 "hotkey"
             ],
@@ -106,6 +125,14 @@
             ],
             "type": "key",
             "target": "KEY_L"
+        },
+        {
+            "trigger": [
+                "hotkey",
+                "pageup"
+            ],
+            "type": "exec",
+            "target": "batocera-screenshot"
         }
     ]
 }

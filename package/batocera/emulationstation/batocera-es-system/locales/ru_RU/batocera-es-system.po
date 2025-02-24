@@ -304,7 +304,7 @@ msgctxt "game_options"
 msgid "100Mhz (Overclock)"
 msgstr "100Mhz (Разгон)"
 
-#. TRANSLATION: libretro/tyrquake
+#. TRANSLATION: libretro/openlara, libretro/tyrquake
 msgctxt "game_options"
 msgid "100fps"
 msgstr "100fps"
@@ -389,6 +389,11 @@ msgctxt "game_options"
 msgid "11 MHz"
 msgstr "11 MHz"
 
+#. TRANSLATION: libretro/openlara
+msgctxt "game_options"
+msgid "119fps"
+msgstr "119fps"
+
 #. TRANSLATION: libretro/np2kai, libretro/px68k
 msgctxt "game_options"
 msgid "11MB"
@@ -424,7 +429,7 @@ msgctxt "game_options"
 msgid "120MB"
 msgstr "120MB"
 
-#. TRANSLATION: libretro/tyrquake, xenia-canary
+#. TRANSLATION: libretro/openlara, libretro/tyrquake, xenia-canary
 msgctxt "game_options"
 msgid "120fps"
 msgstr "120fps"
@@ -544,7 +549,7 @@ msgctxt "game_options"
 msgid "1440 x 900"
 msgstr "1440 x 900"
 
-#. TRANSLATION: libretro/tyrquake, xenia-canary
+#. TRANSLATION: libretro/openlara, libretro/tyrquake, xenia-canary
 msgctxt "game_options"
 msgid "144fps"
 msgstr "144fps"
@@ -974,10 +979,20 @@ msgctxt "game_options"
 msgid "240 fps"
 msgstr "240 fps"
 
+#. TRANSLATION: libretro/openlara
+msgctxt "game_options"
+msgid "240fps"
+msgstr "240fps"
+
 #. TRANSLATION: rpcs3
 msgctxt "game_options"
 msgid "240ms"
 msgstr "240ms"
+
+#. TRANSLATION: libretro/openlara
+msgctxt "game_options"
+msgid "244fps"
+msgstr "244fps"
 
 #. TRANSLATION: libretro/dosbox_pure
 msgctxt "game_options"
@@ -1234,7 +1249,7 @@ msgctxt "game_options"
 msgid "30FPS"
 msgstr "30FPS"
 
-#. TRANSLATION: libretro/tyrquake
+#. TRANSLATION: libretro/openlara, libretro/tyrquake
 msgctxt "game_options"
 msgid "30fps"
 msgstr "30fps"
@@ -1338,16 +1353,6 @@ msgstr "386, 20MHz (4720 cps)"
 msgctxt "game_options"
 msgid "386DX, 33MHz (7800 cps)"
 msgstr "386DX, 33MHz (7800 cps)"
-
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "386_prefetch"
-msgstr ""
-
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "386_slow"
-msgstr ""
 
 #. TRANSLATION: supermodel
 msgctxt "game_options"
@@ -1488,11 +1493,6 @@ msgstr "486DX, 33MHz (13400 cps)"
 msgctxt "game_options"
 msgid "486DX2, 66MHz (26800 cps)"
 msgstr "486DX2, 66MHz (26800 cps)"
-
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "486_slow"
-msgstr ""
 
 #. TRANSLATION: libretro/dosbox_pure, libretro/mame, mame/pcsx2, xenia, xenia-canary
 msgctxt "game_options"
@@ -1794,6 +1794,11 @@ msgctxt "game_options"
 msgid "60fps"
 msgstr "60fps"
 
+#. TRANSLATION: libretro/openlara
+msgctxt "game_options"
+msgid "60fps (Default)"
+msgstr "60fps (по умолчанию)"
+
 #. TRANSLATION: rpcs3
 msgctxt "game_options"
 msgid "60ms"
@@ -1884,6 +1889,11 @@ msgctxt "game_options"
 msgid "7 Frames"
 msgstr "7 кадров"
 
+#. TRANSLATION: libretro/openlara
+msgctxt "game_options"
+msgid "70fps"
+msgstr "70fps"
+
 #. TRANSLATION: libretro/kronos, libretro/yabasanshiro, theforceengine
 msgctxt "game_options"
 msgid "720p"
@@ -1893,6 +1903,11 @@ msgstr "720p"
 msgctxt "game_options"
 msgid "72MB"
 msgstr "72MB"
+
+#. TRANSLATION: libretro/openlara
+msgctxt "game_options"
+msgid "72fps"
+msgstr "72fps"
 
 #. TRANSLATION: iortcw, lindbergh-loader, theforceengine
 msgctxt "game_options"
@@ -1904,7 +1919,7 @@ msgctxt "game_options"
 msgid "75% (Default)"
 msgstr "75% (по умолчанию)"
 
-#. TRANSLATION: libretro/tyrquake
+#. TRANSLATION: libretro/openlara, libretro/tyrquake
 msgctxt "game_options"
 msgid "75fps"
 msgstr "75fps"
@@ -2094,7 +2109,7 @@ msgctxt "game_options"
 msgid "90 degrees"
 msgstr "90 градусов"
 
-#. TRANSLATION: libretro/tyrquake
+#. TRANSLATION: libretro/openlara, libretro/tyrquake
 msgctxt "game_options"
 msgid "90fps"
 msgstr "90fps"
@@ -2329,16 +2344,6 @@ msgctxt "game_options"
 msgid "APF M-1000 cartridges"
 msgstr "APF M-1000 cartridges"
 
-#. TRANSLATION: gsplus
-msgctxt "game_options"
-msgid "APPLE2GS-BIOS.ROM"
-msgstr ""
-
-#. TRANSLATION: gsplus
-msgctxt "game_options"
-msgid "APPLE2GS.ROM"
-msgstr ""
-
 #. TRANSLATION: libretro/mame, mame/pcsx2
 msgctxt "game_options"
 msgid "ARCHIMEDES MODEL"
@@ -2468,11 +2473,6 @@ msgstr "СИНХРОНИЗАЦИЯ ЗВУКА"
 msgctxt "game_options"
 msgid "AUDIO VOLUME GAIN"
 msgstr "УСИЛЕНИЕ ГРОМКОСТИ ЗВУКА"
-
-#. TRANSLATION: dosbox, dosbox, dosbox
-msgctxt "game_options"
-msgid "AUTO"
-msgstr ""
 
 #. TRANSLATION: tsugaru
 msgctxt "game_options"
@@ -2834,6 +2834,11 @@ msgid ""
 "resolution."
 msgstr "Разрешить рендеринг игры, поддерживающей разные разрешения."
 
+#. TRANSLATION: fpinball
+msgctxt "game_options"
+msgid "Allow mapping Future Pinball with Pad to Keyboard."
+msgstr "Позволяет сопоставить Future Pinball с Pad и клавиатурой."
+
 #. TRANSLATION: rpcs3
 msgctxt "game_options"
 msgid "Allows Alt+Tab to RPCS3's menu. Useful for manual disc-swapping."
@@ -2920,11 +2925,6 @@ msgstr "Всегда иметь 6 пуль, 6 динамитов и 6 жизне
 msgctxt "game_options"
 msgid "American English"
 msgstr "Американский английский"
-
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "Amount of instructions DOSBox tries to emulate"
-msgstr ""
 
 #. TRANSLATION: libretro/mame078plus
 msgctxt "game_options"
@@ -3605,11 +3605,6 @@ msgctxt "game_options"
 msgid "BT601_625/D65 (recommended for all EUR/AUS developed games)"
 msgstr "BT601_625/D65 (рекомендуется для всех EUR/AUS игр)"
 
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Back / Menu"
-msgstr ""
-
 #. TRANSLATION: xenia, xenia-canary
 msgctxt "game_options"
 msgid "Bahrain"
@@ -3880,6 +3875,11 @@ msgstr "Brazil"
 msgctxt "game_options"
 msgid "Brazilian Portuguese"
 msgstr "Бразильский португальский"
+
+#. TRANSLATION: fallout1-ce.keys, fallout2-ce.keys
+msgctxt "keys_files"
+msgid "Bring up menu"
+msgstr "Вызвать меню"
 
 #. TRANSLATION: ryujinx, suyu
 msgctxt "game_options"
@@ -4354,6 +4354,11 @@ msgctxt "game_options"
 msgid "CONTROLLER COMBINATION"
 msgstr "КОМБИНАЦИЯ КОТРОЛЛЕРОВ"
 
+#. TRANSLATION: fpinball
+msgctxt "game_options"
+msgid "CONTROLLER CONFIGURATION"
+msgstr "НАСТРОЙКА КОНТРОЛЛЕРА"
+
 #. TRANSLATION: lindbergh-loader
 msgctxt "game_options"
 msgid "CONTROLLER MODE"
@@ -4429,7 +4434,7 @@ msgctxt "game_options"
 msgid "CPU COMPATIBILITY"
 msgstr "СОВМЕСТИМОСТЬ CPU"
 
-#. TRANSLATION: dosbox, libretro/mupen64plus-next
+#. TRANSLATION: libretro/mupen64plus-next
 msgctxt "game_options"
 msgid "CPU CORE"
 msgstr "ЯДРО ПРОЦЕССОРА"
@@ -4438,16 +4443,6 @@ msgstr "ЯДРО ПРОЦЕССОРА"
 msgctxt "game_options"
 msgid "CPU CORE METHOD"
 msgstr "МЕТОД ЯДРА CPU"
-
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "CPU CYCLES"
-msgstr ""
-
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "CPU Core used in emulation"
-msgstr ""
 
 #. TRANSLATION: libretro/mednafen_psx
 msgctxt "game_options"
@@ -4474,15 +4469,10 @@ msgctxt "game_options"
 msgid "CPU TIMING MODE (FPS)"
 msgstr "РЕЖИМ СИНХРОНИЗАЦИИ CPU (FPS)"
 
-#. TRANSLATION: dosbox, libretro/dosbox_pure
+#. TRANSLATION: libretro/dosbox_pure
 msgctxt "game_options"
 msgid "CPU TYPE"
 msgstr "ТИП CPU"
-
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "CPU Type used in emulation"
-msgstr ""
 
 #. TRANSLATION: libretro/mame, libretro/mamevirtual
 msgctxt "game_options"
@@ -4790,6 +4780,11 @@ msgctxt "game_options"
 msgid "Center"
 msgstr "Центр"
 
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Change Camera Angle"
+msgstr "Изменение угла камеры"
+
 #. TRANSLATION: libretro/mesen-s
 msgctxt "game_options"
 msgid ""
@@ -5049,11 +5044,6 @@ msgstr ""
 "Выбрать, следует ли передавать конфигурацию игрового контроллера SDL в игру "
 "Windows. Отключение может помочь в некоторых играх."
 
-#. TRANSLATION: gsplus
-msgctxt "game_options"
-msgid "Choose which BIOS file for GSplus to boot with."
-msgstr ""
-
 #. TRANSLATION: cemu, citra, dolphin, dolphin_triforce, duckstation, ...
 msgctxt "game_options"
 msgid "Choose which graphics API library to use."
@@ -5221,6 +5211,11 @@ msgctxt "game_options"
 msgid "Close app on the remote host when quitting Moonlight."
 msgstr "Закрыть приложение на удаленном хосте при выходе из Moonlight."
 
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Coin"
+msgstr "Монета"
+
 #. TRANSLATION: libretro/mame, mame/pcsx2
 msgctxt "game_options"
 msgid "Coleco ADAM diskettes"
@@ -5324,6 +5319,11 @@ msgctxt "game_options"
 msgid "Config"
 msgstr "Конфиг"
 
+#. TRANSLATION: atomiswave.flycast.keys, dreamcast.flycast.keys, jaguar.bigpemu.keys, jaguarcd.bigpemu.keys, naomi.flycast.keys, ...
+msgctxt "keys_files"
+msgid "Configuration menu"
+msgstr "Меню настроек"
+
 #. TRANSLATION: gzdoom
 msgctxt "game_options"
 msgid "Configuring controllers in GZDoom can cause problems."
@@ -5338,6 +5338,11 @@ msgstr "Консоль AES Japan"
 msgctxt "game_options"
 msgid "Console AES World"
 msgstr "Консоль AES World"
+
+#. TRANSLATION: 3ds.citra.keys
+msgctxt "keys_files"
+msgid "Continue/Pause emulation"
+msgstr "Продолжить/приостановить эмуляцию"
 
 #. TRANSLATION: pcsx2
 msgctxt "game_options"
@@ -5435,11 +5440,6 @@ msgstr ""
 msgctxt "game_options"
 msgid "Cross"
 msgstr "Крест"
-
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Crouch"
-msgstr ""
 
 #. TRANSLATION: suyu
 msgctxt "game_options"
@@ -6122,11 +6122,6 @@ msgctxt "game_options"
 msgid "Driving Force Pro"
 msgstr "Driving Force Pro"
 
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Drop item"
-msgstr ""
-
 #. TRANSLATION: rott.keys
 msgctxt "keys_files"
 msgid "Drop weapon"
@@ -6179,11 +6174,6 @@ msgstr "Голландский"
 msgctxt "game_options"
 msgid "Dutch (nl)"
 msgstr "Голландский (nl)"
-
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "Dynamic"
-msgstr ""
 
 #. TRANSLATION: libretro/dosbox_pure
 msgctxt "game_options"
@@ -6413,11 +6403,6 @@ msgstr "ESYNC"
 #. TRANSLATION: lindbergh-loader
 msgctxt "game_options"
 msgid "EVDEV (Default)"
-msgstr ""
-
-#. TRANSLATION: tr1x
-msgctxt "game_options"
-msgid "EXPANSION PACK"
 msgstr ""
 
 #. TRANSLATION: vpinball, vpinball
@@ -7230,9 +7215,59 @@ msgctxt "game_options"
 msgid "Exclusive Ubershaders"
 msgstr "Эксклюзивные убершейдеры"
 
-#. TRANSLATION: hotkeys.keys
+#. TRANSLATION: wii.dolphin.keys
+msgctxt "keys_files"
+msgid "Exit Dolphin"
+msgstr "Выход из Dolphin"
+
+#. TRANSLATION: dos.dosbox-x.keys
+msgctxt "keys_files"
+msgid "Exit Dosbox-X"
+msgstr "Выйти из Dosbox-X"
+
+#. TRANSLATION: nds.drastic.keys
+msgctxt "keys_files"
+msgid "Exit Drastic"
+msgstr "Выйти из Drastic"
+
+#. TRANSLATION: psx.duckstation.keys
+msgctxt "keys_files"
+msgid "Exit Duckstation"
+msgstr "Выйти из DuckStation"
+
+#. TRANSLATION: catacomb.keys, lindbergh.keys
+msgctxt "keys_files"
+msgid "Exit Game"
+msgstr "Выйти из игры"
+
+#. TRANSLATION: steam.keys
+msgctxt "keys_files"
+msgid "Exit Steam"
+msgstr "Выйти из Steam"
+
+#. TRANSLATION: 3ds.citra.keys, amiga1200.fsuae.keys, amiga500.fsuae.keys, amigacd32.fsuae.keys, amigacdtv.fsuae.keys, ...
 msgctxt "keys_files"
 msgid "Exit emulator"
+msgstr "Выйти из эмулятора"
+
+#. TRANSLATION: moonlight.moonlight.keys
+msgctxt "keys_files"
+msgid "Exit emulator using SDL"
+msgstr "Выйти из эмулятора с помощью SDL"
+
+#. TRANSLATION: etlegacy.keys, fallout1-ce.keys, fallout2-ce.keys, jazz2.keys, sonic-mania.keys, ...
+msgctxt "keys_files"
+msgid "Exit game"
+msgstr "Выйти из игры"
+
+#. TRANSLATION: flatpak.keys
+msgctxt "keys_files"
+msgid "Exit running Flatpak"
+msgstr "Завершить работу Flatpak"
+
+#. TRANSLATION: dreamcast.redream.keys, fpinball.keys, jaguar.bigpemu.keys, jaguarcd.bigpemu.keys, openjazz.keys, ...
+msgctxt "keys_files"
+msgid "Exit the emulator"
 msgstr "Выйти из эмулятора"
 
 #. TRANSLATION: lindbergh-loader
@@ -7430,6 +7465,11 @@ msgctxt "game_options"
 msgid "FRAME RATE LIMIT"
 msgstr "ОГРАНИЧЕНИЕ ЧАСТОТЫ КАДРОВ"
 
+#. TRANSLATION: libretro/openlara
+msgctxt "game_options"
+msgid "FRAMERATE"
+msgstr "ЧАСТОТА КАДРОВ"
+
 #. TRANSLATION: libretro/desmume, libretro/fbneo, libretro/flycast, libretro/mame078plus, libretro/mgba, ...
 msgctxt "game_options"
 msgid "FRAMESKIP"
@@ -7610,7 +7650,7 @@ msgctxt "game_options"
 msgid "Finnish (fi)"
 msgstr "Finnish (fi)"
 
-#. TRANSLATION: quake2.keys, rott.keys
+#. TRANSLATION: rott.keys
 msgctxt "keys_files"
 msgid "Fire"
 msgstr "Огонь"
@@ -7889,6 +7929,11 @@ msgctxt "game_options"
 msgid "Forces the DX driver to use Managed textures instead of Dynamic."
 msgstr ""
 "Заставляет драйвер DX использовать управляемые текстуры вместо динамических."
+
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Forward Nudge"
+msgstr "Толчок вперёд"
 
 #. TRANSLATION: vpinball
 msgctxt "game_options"
@@ -8313,11 +8358,6 @@ msgstr "ГРАФИЧЕСКИЙ ПЛАГИН"
 msgctxt "game_options"
 msgid "GRAPHICS RENDERER"
 msgstr "ГРАФИЧЕСКИЙ РЕНДЕР"
-
-#. TRANSLATION: gsplus
-msgctxt "game_options"
-msgid "GSPLUS BIOS FILENAME"
-msgstr ""
 
 #. TRANSLATION: pcsx2
 msgctxt "game_options"
@@ -8766,11 +8806,6 @@ msgstr "Hebrew"
 msgctxt "game_options"
 msgid "Help and Information"
 msgstr "Помощь и информация"
-
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Help computer"
-msgstr ""
 
 #. TRANSLATION: libretro/puae, libretro/puae2021
 msgctxt "game_options"
@@ -9231,11 +9266,6 @@ msgctxt "game_options"
 msgid "InuYasha Sengoku Battle Fix"
 msgstr "InuYasha Sengoku - фикс битв"
 
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Inventory"
-msgstr ""
-
 #. TRANSLATION: vpinball
 msgctxt "game_options"
 msgid ""
@@ -9479,11 +9509,6 @@ msgstr "Джойстик (аналог, 2 кнопки)"
 msgctxt "game_options"
 msgid "July"
 msgstr "Июль"
-
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Jump"
-msgstr ""
 
 #. TRANSLATION: libretro/melondsds
 msgctxt "game_options"
@@ -9805,6 +9830,21 @@ msgctxt "keys_files"
 msgid "Left"
 msgstr "Влево"
 
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Left Flipper"
+msgstr "Left Flipper"
+
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Left Magna Save"
+msgstr ""
+
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Left Nudge"
+msgstr "Left Nudge"
+
 #. TRANSLATION: vpinball.keys
 msgctxt "keys_files"
 msgid "Left flipper"
@@ -9934,6 +9974,16 @@ msgctxt "game_options"
 msgid "Lithuania"
 msgstr "Lithuania"
 
+#. TRANSLATION: atomiswave.flycast.keys, dreamcast.flycast.keys, jaguar.bigpemu.keys, jaguarcd.bigpemu.keys, naomi.flycast.keys, ...
+msgctxt "keys_files"
+msgid "Load State"
+msgstr "Загрузка"
+
+#. TRANSLATION: triforce.dolphin_triforce.keys
+msgctxt "keys_files"
+msgid "Load State Slot 1"
+msgstr "Загрука из Слота 1"
+
 #. TRANSLATION: shared
 msgctxt "game_options"
 msgid "Load latest save state on game launch and save state when exiting game."
@@ -9958,16 +10008,6 @@ msgstr "Lockbar кнопка огня"
 msgctxt "game_options"
 msgid "Long visible screen edge (cm)"
 msgstr "Длинный видимый край экрана (см)"
-
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Look down"
-msgstr ""
-
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Look up"
-msgstr ""
 
 #. TRANSLATION: amiberry, libretro/fceumm, libretro/mesen, libretro/mesen-s, mupen64plus, ...
 msgctxt "game_options"
@@ -10351,11 +10391,6 @@ msgctxt "game_options"
 msgid "Match Window"
 msgstr "Match Window"
 
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "Max"
-msgstr ""
-
 #. TRANSLATION: libretro/snes9x, libretro/snes9x_next
 msgctxt "game_options"
 msgid "Max (demanding games)"
@@ -10455,6 +10490,11 @@ msgctxt "game_options"
 msgid "May result in a sharper image in some 2D games."
 msgstr "Может показать более четкое изображение в некоторых 2D-играх."
 
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Mech Tilt"
+msgstr "Mech Tilt"
+
 #. TRANSLATION: libretro/mesen, libretro/mesen-s, mupen64plus, pcsx2
 msgctxt "game_options"
 msgid "Medium"
@@ -10529,7 +10569,7 @@ msgctxt "game_options"
 msgid "Menacer Light Gun"
 msgstr "Menacer Light Gun"
 
-#. TRANSLATION: hotkeys.keys
+#. TRANSLATION: scummvm.keys
 msgctxt "keys_files"
 msgid "Menu"
 msgstr "Меню"
@@ -10686,12 +10726,7 @@ msgctxt "keys_files"
 msgid "Move Stylet Pointer"
 msgstr "Переместить указатель стилета"
 
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Move back / down"
-msgstr ""
-
-#. TRANSLATION: quake2.keys, rott.keys
+#. TRANSLATION: rott.keys
 msgctxt "keys_files"
 msgid "Move backward"
 msgstr "Двигаться назад"
@@ -10716,22 +10751,17 @@ msgctxt "keys_files"
 msgid "Move camera up"
 msgstr "Переместить камеру вверх"
 
-#. TRANSLATION: quake2.keys, rott.keys
+#. TRANSLATION: rott.keys
 msgctxt "keys_files"
 msgid "Move forward"
 msgstr "Двигаться вперёд"
 
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Move forward / up"
-msgstr ""
-
-#. TRANSLATION: quake2.keys, rott.keys
+#. TRANSLATION: rott.keys
 msgctxt "keys_files"
 msgid "Move left"
 msgstr "Двигаться влево"
 
-#. TRANSLATION: quake2.keys, rott.keys
+#. TRANSLATION: rott.keys
 msgctxt "keys_files"
 msgid "Move right"
 msgstr "Двигаться вправо"
@@ -10752,6 +10782,11 @@ msgstr "Гораздо быстрее, чем интерпретатор (но �
 msgctxt "game_options"
 msgid "N64"
 msgstr "N64"
+
+#. TRANSLATION: libretro/mupen64plus-next, libretro/parallel_n64, mupen64plus
+msgctxt "game_options"
+msgid "N64 (Limited Hotkeys)"
+msgstr "N64 (Ограниченные хоткеи)"
 
 #. TRANSLATION: libretro/parallel_n64
 msgctxt "game_options"
@@ -11063,21 +11098,6 @@ msgctxt "keys_files"
 msgid "Next Disc (m3u)"
 msgstr "Следующий диск (m3u)"
 
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Next item"
-msgstr ""
-
-#. TRANSLATION: hotkeys.keys
-msgctxt "keys_files"
-msgid "Next slot"
-msgstr ""
-
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Next weapon"
-msgstr ""
-
 #. TRANSLATION: xenia, xenia-canary
 msgctxt "game_options"
 msgid "Nicaragua"
@@ -11128,7 +11148,7 @@ msgctxt "game_options"
 msgid "None/Sharp Pixels"
 msgstr "Нет/Резкие пиксели"
 
-#. TRANSLATION: dosbox, duckstation, libretro/puae, libretro/puae2021, openbor, ...
+#. TRANSLATION: duckstation, libretro/puae, libretro/puae2021, openbor, scummvm, ...
 msgctxt "game_options"
 msgid "Normal"
 msgstr "Нормальный"
@@ -11496,6 +11516,16 @@ msgstr ""
 "Только поддерживаемые игры. Более высокие настройки повышают системные "
 "требования."
 
+#. TRANSLATION: triforce.dolphin_triforce.keys
+msgctxt "keys_files"
+msgid "Open Dolphin-triforce's menu"
+msgstr "Открыть меню Dolphin-triforce"
+
+#. TRANSLATION: psx.duckstation.keys
+msgctxt "keys_files"
+msgid "Open DuckStation Quick Menu"
+msgstr "Открыть быстрое меню DuckStation"
+
 #. TRANSLATION: corsixth.keys
 msgctxt "keys_files"
 msgid "Open LUA console"
@@ -11503,8 +11533,18 @@ msgstr "Открыть консоль LUA"
 
 #. TRANSLATION: catacomb.keys
 msgctxt "keys_files"
+msgid "Open Load Menu"
+msgstr "Открыть меню загрузки"
+
+#. TRANSLATION: catacomb.keys
+msgctxt "keys_files"
 msgid "Open Menu"
 msgstr "Открыть меню"
+
+#. TRANSLATION: catacomb.keys
+msgctxt "keys_files"
+msgid "Open Save Menu"
+msgstr "Открыть меню сохранения"
 
 #. TRANSLATION: corsixth.keys
 msgctxt "keys_files"
@@ -11946,6 +11986,11 @@ msgctxt "game_options"
 msgid "Passes all physical keyboard events for Pad2Key."
 msgstr "Передаёт все события физической клавиатуры для Pad2Key."
 
+#. TRANSLATION: psp.ppsspp.keys
+msgctxt "keys_files"
+msgid "Pause / Menu"
+msgstr "Пауза / Меню"
+
 #. TRANSLATION: libretro/fuse
 msgctxt "game_options"
 msgid "Pentagon 1024"
@@ -12135,6 +12180,11 @@ msgctxt "game_options"
 msgid "Playstation 2 wheel type"
 msgstr "Тип руля Playstation 2"
 
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Plunger"
+msgstr "Plunger"
+
 #. TRANSLATION: bigpemu
 msgctxt "game_options"
 msgid "Point (Default)"
@@ -12297,16 +12347,6 @@ msgctxt "keys_files"
 msgid "Press the Y key for 'Yes'"
 msgstr "Нажмите клавишу N для 'Yes'"
 
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Previous item"
-msgstr ""
-
-#. TRANSLATION: hotkeys.keys
-msgctxt "keys_files"
-msgid "Previous slot"
-msgstr ""
-
 #. TRANSLATION: cemu
 msgctxt "game_options"
 msgid "Pro Controller required for games that require shake motions."
@@ -12382,10 +12422,45 @@ msgctxt "game_options"
 msgid "Qatar"
 msgstr "Qatar"
 
+#. TRANSLATION: cgenius.cgenius.keys, doom3.dhewm3.keys, theforceengine.keys
+msgctxt "keys_files"
+msgid "Quick Load"
+msgstr "Быстрая загрузка"
+
+#. TRANSLATION: cgenius.cgenius.keys, doom3.dhewm3.keys, theforceengine.keys
+msgctxt "keys_files"
+msgid "Quick Save"
+msgstr "Быстрое сохранение"
+
+#. TRANSLATION: corsixth.keys, fallout1-ce.keys, fallout2-ce.keys, iortcw.keys, mame.mame.keys
+msgctxt "keys_files"
+msgid "Quick load"
+msgstr "Быстрая загрузка"
+
+#. TRANSLATION: corsixth.keys, fallout1-ce.keys, fallout2-ce.keys, iortcw.keys, mame.mame.keys
+msgctxt "keys_files"
+msgid "Quick save"
+msgstr "Быстрое сохранение"
+
+#. TRANSLATION: nds.drastic.keys
+msgctxt "keys_files"
+msgid "QuickMenu"
+msgstr "Быстрое меню"
+
 #. TRANSLATION: libretro/mame, mame/pcsx2, mame/pcsx2
 msgctxt "game_options"
 msgid "Quickload"
 msgstr "Быстрая загрузка"
+
+#. TRANSLATION: cannonball.keys, corsixth.keys, xash3d_fwgs.keys
+msgctxt "keys_files"
+msgid "Quit the application"
+msgstr "Выйти из приложения"
+
+#. TRANSLATION: corsixth.keys
+msgctxt "keys_files"
+msgid "Quits the current level"
+msgstr "Выход из текущего уровня"
 
 #. TRANSLATION: libretro/vice_x128, libretro/vice_x64, libretro/vice_x64sc
 msgctxt "game_options"
@@ -12566,21 +12641,6 @@ msgstr "ROM (Слот 3)"
 msgctxt "game_options"
 msgid "ROM (Slot 4)"
 msgstr "ROM (Слот 4)"
-
-#. TRANSLATION: gsplus
-msgctxt "game_options"
-msgid "ROM.00"
-msgstr ""
-
-#. TRANSLATION: gsplus
-msgctxt "game_options"
-msgid "ROM.03 (default)"
-msgstr ""
-
-#. TRANSLATION: gsplus
-msgctxt "game_options"
-msgid "ROM1"
-msgstr ""
 
 #. TRANSLATION: moonlight
 msgctxt "game_options"
@@ -12852,11 +12912,6 @@ msgctxt "game_options"
 msgid "Restore BLENDMODE outline on Singe sprites."
 msgstr "Восстанавливает контур РЕЖИМА СМЕШИВАНИЯ на одиночных спрайтах."
 
-#. TRANSLATION: hotkeys.keys
-msgctxt "keys_files"
-msgid "Restore state"
-msgstr ""
-
 #. TRANSLATION: libretro/mupen64plus-next, libretro/mupen64plus-next, libretro/mupen64plus-next, libretro/mupen64plus-next, libretro/parallel_n64, ...
 msgctxt "game_options"
 msgid "RetroPad (Default)"
@@ -12896,6 +12951,21 @@ msgstr "Rice"
 msgctxt "keys_files"
 msgid "Right"
 msgstr "Вправо"
+
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Right Flipper"
+msgstr "Right Flipper"
+
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Right Magna Save"
+msgstr ""
+
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Right Nudge"
+msgstr "Right Nudge"
 
 #. TRANSLATION: libretro/melonds
 msgctxt "game_options"
@@ -12998,15 +13068,10 @@ msgctxt "game_options"
 msgid "Rumble Pak (Automatic)"
 msgstr "Rumble Pak (автоматический)"
 
-#. TRANSLATION: catacomb.keys, quake2.keys, rott.keys
+#. TRANSLATION: catacomb.keys, rott.keys
 msgctxt "keys_files"
 msgid "Run"
 msgstr "Бег"
-
-#. TRANSLATION: tr1x
-msgctxt "game_options"
-msgid "Run the Unfinished expansion pack."
-msgstr ""
 
 #. TRANSLATION: lindbergh-loader
 msgctxt "game_options"
@@ -13563,10 +13628,15 @@ msgctxt "game_options"
 msgid "Saudi Arabia"
 msgstr "Saudi Arabia"
 
-#. TRANSLATION: hotkeys.keys
+#. TRANSLATION: atomiswave.flycast.keys, dreamcast.flycast.keys, jaguar.bigpemu.keys, jaguarcd.bigpemu.keys, naomi.flycast.keys, ...
 msgctxt "keys_files"
-msgid "Save state"
-msgstr ""
+msgid "Save State"
+msgstr "Сохранение"
+
+#. TRANSLATION: triforce.dolphin_triforce.keys
+msgctxt "keys_files"
+msgid "Save State Slot 1"
+msgstr "Сохранение в Слот 1"
 
 #. TRANSLATION: xemu
 msgctxt "game_options"
@@ -13618,7 +13688,7 @@ msgctxt "game_options"
 msgid "Screen inclination (degree)"
 msgstr "Наклон экрана (градус)"
 
-#. TRANSLATION: hotkeys.keys
+#. TRANSLATION: 3ds.citra.keys, atomiswave.flycast.keys, doom3.dhewm3.keys, dreamcast.flycast.keys, iortcw.keys, ...
 msgctxt "keys_files"
 msgid "Screenshot"
 msgstr "Скриншот"
@@ -13762,12 +13832,22 @@ msgctxt "game_options"
 msgid "Serbian"
 msgstr "Сербский"
 
+#. TRANSLATION: daphne.hypseus-singe.keys, singe.hypseus-singe.keys
+msgctxt "keys_files"
+msgid "Service menu"
+msgstr "Сервисное меню"
+
 #. TRANSLATION: libretro/fuse
 msgctxt "game_options"
 msgid "Set controller 1 and 2 to None to use it standalone."
 msgstr ""
 "Установите для контроллеров 1 и 2 значение Нет, чтобы использовать их "
 "автономно."
+
+#. TRANSLATION: libretro/openlara
+msgctxt "game_options"
+msgid "Set desired framerate."
+msgstr "Установить желаемую частоту кадров."
 
 #. TRANSLATION: shared
 msgctxt "game_options"
@@ -13876,6 +13956,11 @@ msgstr "Устанавлить режим работы фильтра масшт
 msgctxt "game_options"
 msgid "Sets the window size to an integer size."
 msgstr "Устанавливает размер окна в целочисленное значение."
+
+#. TRANSLATION: amiga1200.fsuae.keys, amiga500.fsuae.keys, amigacd32.fsuae.keys, amigacdtv.fsuae.keys
+msgctxt "keys_files"
+msgid "Settings GUI"
+msgstr "Настройки GUI"
 
 #. TRANSLATION: libretro/mrboom
 msgctxt "game_options"
@@ -14037,7 +14122,7 @@ msgctxt "game_options"
 msgid "Shunt 9"
 msgstr "Shunt 9"
 
-#. TRANSLATION: dosbox, libretro/gambatte, libretro/o2em
+#. TRANSLATION: libretro/gambatte, libretro/o2em
 msgctxt "game_options"
 msgid "Simple"
 msgstr "Простой"
@@ -14196,6 +14281,16 @@ msgstr ""
 msgctxt "game_options"
 msgid "Skynet"
 msgstr "Скайнет"
+
+#. TRANSLATION: psp.ppsspp.keys, psx.duckstation.keys
+msgctxt "keys_files"
+msgid "Slot +"
+msgstr "Слот +"
+
+#. TRANSLATION: psp.ppsspp.keys, psx.duckstation.keys
+msgctxt "keys_files"
+msgid "Slot -"
+msgstr "Слот -"
 
 #. TRANSLATION: libretro/mame, mame/pcsx2
 msgctxt "game_options"
@@ -14570,6 +14665,11 @@ msgctxt "game_options"
 msgid "Standard OpenGL (Default)"
 msgstr "Стандартный OpenGL (по умолчанию)"
 
+#. TRANSLATION: fpinball.keys
+msgctxt "keys_files"
+msgid "Start"
+msgstr "Старт"
+
 #. TRANSLATION: catacomb.keys
 msgctxt "keys_files"
 msgid "Start / Enter"
@@ -14622,12 +14722,12 @@ msgctxt "keys_files"
 msgid "Strafe Right"
 msgstr "Стрейф вправо"
 
-#. TRANSLATION: quake2.keys, rott.keys
+#. TRANSLATION: rott.keys
 msgctxt "keys_files"
 msgid "Strafe left"
 msgstr "Стрейф влево"
 
-#. TRANSLATION: quake2.keys, rott.keys
+#. TRANSLATION: rott.keys
 msgctxt "keys_files"
 msgid "Strafe right"
 msgstr "Стрейф вправо"
@@ -15113,6 +15213,11 @@ msgstr "Тайвань"
 msgctxt "game_options"
 msgid "Taiwanese"
 msgstr "Тайваньский"
+
+#. TRANSLATION: corsixth.keys
+msgctxt "keys_files"
+msgid "Take a screenshot"
+msgstr "Сделать скриншот"
 
 #. TRANSLATION: libretro/dosbox_pure
 msgctxt "game_options"
@@ -15931,11 +16036,6 @@ msgctxt "game_options"
 msgid ""
 "Use if you're having graphical issues or GPU problems with this emulator."
 msgstr "Используйте, если у вас проблемы с графикой или GPU с этим эмулятором."
-
-#. TRANSLATION: quake2.keys
-msgctxt "keys_files"
-msgid "Use item"
-msgstr ""
 
 #. TRANSLATION: libretro/melonds
 msgctxt "game_options"
@@ -16775,6 +16875,11 @@ msgctxt "keys_files"
 msgid "drop proximity bomb"
 msgstr "сбросить бесконтактную бомбу"
 
+#. TRANSLATION: dxx-rebirth.keys
+msgctxt "keys_files"
+msgid "exit game"
+msgstr "выйти из игры"
+
 #. TRANSLATION: libretro/dosbox
 msgctxt "game_options"
 msgid "external (variable fps)"
@@ -16974,11 +17079,6 @@ msgctxt "game_options"
 msgid "original gameboy"
 msgstr "оригинальный gameboy"
 
-#. TRANSLATION: dosbox
-msgctxt "game_options"
-msgid "pentium_slow"
-msgstr ""
-
 #. TRANSLATION: libretro/vba-m
 msgctxt "game_options"
 msgid "pink dreams"
@@ -16994,10 +17094,30 @@ msgctxt "keys_files"
 msgid "proximity bomb"
 msgstr "бесконтактная бомба"
 
+#. TRANSLATION: dxx-rebirth.keys
+msgctxt "keys_files"
+msgid "quick load"
+msgstr "быстрая загрузка"
+
+#. TRANSLATION: dxx-rebirth.keys
+msgctxt "keys_files"
+msgid "quick save"
+msgstr "быстрое сохранение"
+
 #. TRANSLATION: libretro/desmume
 msgctxt "game_options"
 msgid "quick switch"
 msgstr "быстрая смена"
+
+#. TRANSLATION: eduke32.keys, gzdoom.keys, raze.keys
+msgctxt "keys_files"
+msgid "quickload"
+msgstr "быстрая загрузка"
+
+#. TRANSLATION: eduke32.keys, gzdoom.keys, raze.keys
+msgctxt "keys_files"
+msgid "quicksave"
+msgstr "быстрое сохранение"
 
 #. TRANSLATION: dxx-rebirth.keys
 msgctxt "keys_files"
@@ -17028,6 +17148,11 @@ msgstr "правый/левый"
 msgctxt "game_options"
 msgid "scanlines"
 msgstr "сканлайны"
+
+#. TRANSLATION: eduke32.keys, gzdoom.keys, raze.keys
+msgctxt "keys_files"
+msgid "screenshot"
+msgstr "скриншот"
 
 #. TRANSLATION: libretro/puae, libretro/puae2021, libretro/vice_x128, libretro/vice_x64, libretro/vice_x64sc, ...
 msgctxt "game_options"
@@ -17154,10 +17279,6 @@ msgstr "жёлтая/синяя"
 #~ msgstr "10x native (2560x1920)"
 
 #~ msgctxt "game_options"
-#~ msgid "119fps"
-#~ msgstr "119fps"
-
-#~ msgctxt "game_options"
 #~ msgid "11x native (2816x2112)"
 #~ msgstr "11x native (2816x2112)"
 
@@ -17220,14 +17341,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "2.5x 1080p (1600x1320)"
 #~ msgstr "2.5x 1080p (1600x1320)"
-
-#~ msgctxt "game_options"
-#~ msgid "240fps"
-#~ msgstr "240fps"
-
-#~ msgctxt "game_options"
-#~ msgid "244fps"
-#~ msgstr "244fps"
 
 #~ msgctxt "game_options"
 #~ msgid "256 KB"
@@ -17298,10 +17411,6 @@ msgstr "жёлтая/синяя"
 #~ msgstr "5x/1080p"
 
 #~ msgctxt "game_options"
-#~ msgid "60fps (Default)"
-#~ msgstr "60fps (по умолчанию)"
-
-#~ msgctxt "game_options"
 #~ msgid "640x480 (Native)"
 #~ msgstr "640x480 (родное)"
 
@@ -17316,14 +17425,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "6x/1440p"
 #~ msgstr "6x/1440p"
-
-#~ msgctxt "game_options"
-#~ msgid "70fps"
-#~ msgstr "70fps"
-
-#~ msgctxt "game_options"
-#~ msgid "72fps"
-#~ msgstr "72fps"
 
 #~ msgctxt "game_options"
 #~ msgid "7x native (1792x1344)"
@@ -17400,10 +17501,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "Allow mapping Future Pinabll with Pad to Keyboard."
 #~ msgstr "Разрешает сопоставление Future Pinabll с Pad для клавиатуры."
-
-#~ msgctxt "game_options"
-#~ msgid "Allow mapping Future Pinball with Pad to Keyboard."
-#~ msgstr "Позволяет сопоставить Future Pinball с Pad и клавиатурой."
 
 #~ msgctxt "game_options"
 #~ msgid "Always have 6 bullets, 6 dynamite, 6 lives."
@@ -17499,10 +17596,6 @@ msgstr "жёлтая/синяя"
 #~ msgid "Bilinear (no edge blending)"
 #~ msgstr "Билинейный (без сглаживания краев)"
 
-#~ msgctxt "keys_files"
-#~ msgid "Bring up menu"
-#~ msgstr "Вызвать меню"
-
 #~ msgctxt "game_options"
 #~ msgid "CDZ (MAME)"
 #~ msgstr "CDZ (MAME)"
@@ -17526,10 +17619,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "CONTOLLER 2"
 #~ msgstr "КОНТРОЛЛЕР 2"
-
-#~ msgctxt "game_options"
-#~ msgid "CONTROLLER CONFIGURATION"
-#~ msgstr "НАСТРОЙКА КОНТРОЛЛЕРА"
 
 #~ msgctxt "game_options"
 #~ msgid "CONTROLLER PAK 1"
@@ -17562,10 +17651,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "Center (Default)"
 #~ msgstr "По центру (по умолчанию)"
-
-#~ msgctxt "keys_files"
-#~ msgid "Change Camera Angle"
-#~ msgstr "Изменение угла камеры"
 
 #~ msgctxt "game_options"
 #~ msgid "Choose console type."
@@ -17632,24 +17717,12 @@ msgstr "жёлтая/синяя"
 #~ "Choose your rendered resolution (Requires personal redream.key file)."
 #~ msgstr "Выберите ваше разрешение (требуется личный файл redream.key)."
 
-#~ msgctxt "keys_files"
-#~ msgid "Coin"
-#~ msgstr "Монета"
-
 #~ msgctxt "game_options"
 #~ msgid ""
 #~ "Compile shaders on next launch of game (one time). Reduces micro-freezes."
 #~ msgstr ""
 #~ "Скомпилировать шейдеры при следующем запуске игры (один раз). Уменьшает "
 #~ "микрофризы."
-
-#~ msgctxt "keys_files"
-#~ msgid "Configuration menu"
-#~ msgstr "Меню настроек"
-
-#~ msgctxt "keys_files"
-#~ msgid "Continue/Pause emulation"
-#~ msgstr "Продолжить/приостановить эмуляцию"
 
 #~ msgctxt "game_options"
 #~ msgid "Converts DirectX 9/10/11/12 calls to Vulkan."
@@ -17839,47 +17912,7 @@ msgstr "жёлтая/синяя"
 #~ msgstr "Ровный (по умолчанию)"
 
 #~ msgctxt "keys_files"
-#~ msgid "Exit Dolphin"
-#~ msgstr "Выход из Dolphin"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit Dosbox-X"
-#~ msgstr "Выйти из Dosbox-X"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit Drastic"
-#~ msgstr "Выйти из Drastic"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit Duckstation"
-#~ msgstr "Выйти из DuckStation"
-
-#~ msgctxt "keys_files"
 #~ msgid "Exit Emulator"
-#~ msgstr "Выйти из эмулятора"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit Game"
-#~ msgstr "Выйти из игры"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit Steam"
-#~ msgstr "Выйти из Steam"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit emulator using SDL"
-#~ msgstr "Выйти из эмулятора с помощью SDL"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit game"
-#~ msgstr "Выйти из игры"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit running Flatpak"
-#~ msgstr "Завершить работу Flatpak"
-
-#~ msgctxt "keys_files"
-#~ msgid "Exit the emulator"
 #~ msgstr "Выйти из эмулятора"
 
 #~ msgctxt "game_options"
@@ -17909,10 +17942,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "FR"
 #~ msgstr "FR"
-
-#~ msgctxt "game_options"
-#~ msgid "FRAMERATE"
-#~ msgstr "ЧАСТОТА КАДРОВ"
 
 #~ msgctxt "game_options"
 #~ msgid "FRAMERATE LIMIT"
@@ -17958,10 +17987,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "Forces Dreamcast Windows CE mode on."
 #~ msgstr "Принудительно включает режим Dreamcast Windows CE."
-
-#~ msgctxt "keys_files"
-#~ msgid "Forward Nudge"
-#~ msgstr "Толчок вперёд"
 
 #~ msgctxt "game_options"
 #~ msgid "Fullspeed can break some games."
@@ -18096,16 +18121,8 @@ msgstr "жёлтая/синяя"
 #~ msgstr "ОГРАНИЧИТЬ ЧАСТОТУ КАДРОВ"
 
 #~ msgctxt "keys_files"
-#~ msgid "Left Flipper"
-#~ msgstr "Left Flipper"
-
-#~ msgctxt "keys_files"
 #~ msgid "Left Manga Save"
 #~ msgstr "Left Manga Save"
-
-#~ msgctxt "keys_files"
-#~ msgid "Left Nudge"
-#~ msgstr "Left Nudge"
 
 #~ msgctxt "game_options"
 #~ msgid "Legacy (laggy)"
@@ -18123,14 +18140,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "Lightguns/multitap."
 #~ msgstr "Lightguns/multitap."
-
-#~ msgctxt "keys_files"
-#~ msgid "Load State"
-#~ msgstr "Загрузка"
-
-#~ msgctxt "keys_files"
-#~ msgid "Load State Slot 1"
-#~ msgstr "Загрука из Слота 1"
 
 #~ msgctxt "game_options"
 #~ msgid "Lynx 128k (Default)"
@@ -18192,17 +18201,9 @@ msgstr "жёлтая/синяя"
 #~ msgid "May help to fix choppy audio on weaker CPUs."
 #~ msgstr "Может помочь исправить прерывистый звук на более слабых CPU."
 
-#~ msgctxt "keys_files"
-#~ msgid "Mech Tilt"
-#~ msgstr "Mech Tilt"
-
 #~ msgctxt "game_options"
 #~ msgid "Mortal Kombat (SNES)"
 #~ msgstr "Mortal Kombat (SNES)"
-
-#~ msgctxt "game_options"
-#~ msgid "N64 (Limited Hotkeys)"
-#~ msgstr "N64 (Ограниченные хоткеи)"
 
 #~ msgctxt "game_options"
 #~ msgid "NL"
@@ -18272,22 +18273,6 @@ msgstr "жёлтая/синяя"
 #~ msgid "On (slower)"
 #~ msgstr "Вкл. (медленнее)"
 
-#~ msgctxt "keys_files"
-#~ msgid "Open Dolphin-triforce's menu"
-#~ msgstr "Открыть меню Dolphin-triforce"
-
-#~ msgctxt "keys_files"
-#~ msgid "Open DuckStation Quick Menu"
-#~ msgstr "Открыть быстрое меню DuckStation"
-
-#~ msgctxt "keys_files"
-#~ msgid "Open Load Menu"
-#~ msgstr "Открыть меню загрузки"
-
-#~ msgctxt "keys_files"
-#~ msgid "Open Save Menu"
-#~ msgstr "Открыть меню сохранения"
-
 #~ msgctxt "game_options"
 #~ msgid "POLYGON SORT ACCURACY"
 #~ msgstr "ТОЧНОСТЬ СОРТИРОВКИ ПОЛИГОНОВ"
@@ -18329,10 +18314,6 @@ msgstr "жёлтая/синяя"
 #~ msgid "PS3 CONTROLLER 7"
 #~ msgstr "PS3 КОНТРОЛЛЕР 7"
 
-#~ msgctxt "keys_files"
-#~ msgid "Pause / Menu"
-#~ msgstr "Пауза / Меню"
-
 #~ msgctxt "game_options"
 #~ msgid "Per-pixel (32 layers)"
 #~ msgstr "Попиксельно (32 слоя)"
@@ -18348,10 +18329,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "Performances"
 #~ msgstr "Производительность"
-
-#~ msgctxt "keys_files"
-#~ msgid "Plunger"
-#~ msgstr "Plunger"
 
 #~ msgctxt "game_options"
 #~ msgid "Preload TLB hack to avoid tlb miss on Goemon"
@@ -18393,34 +18370,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "keys_files"
 #~ msgid "Push 8"
 #~ msgstr "Нажать 8"
-
-#~ msgctxt "keys_files"
-#~ msgid "Quick Load"
-#~ msgstr "Быстрая загрузка"
-
-#~ msgctxt "keys_files"
-#~ msgid "Quick Save"
-#~ msgstr "Быстрое сохранение"
-
-#~ msgctxt "keys_files"
-#~ msgid "Quick load"
-#~ msgstr "Быстрая загрузка"
-
-#~ msgctxt "keys_files"
-#~ msgid "Quick save"
-#~ msgstr "Быстрое сохранение"
-
-#~ msgctxt "keys_files"
-#~ msgid "QuickMenu"
-#~ msgstr "Быстрое меню"
-
-#~ msgctxt "keys_files"
-#~ msgid "Quit the application"
-#~ msgstr "Выйти из приложения"
-
-#~ msgctxt "keys_files"
-#~ msgid "Quits the current level"
-#~ msgstr "Выход из текущего уровня"
 
 #~ msgctxt "game_options"
 #~ msgid "RAW CONTROLLER INPUT"
@@ -18471,16 +18420,8 @@ msgstr "жёлтая/синяя"
 #~ "задержки ввода."
 
 #~ msgctxt "keys_files"
-#~ msgid "Right Flipper"
-#~ msgstr "Right Flipper"
-
-#~ msgctxt "keys_files"
 #~ msgid "Right Manga Save"
 #~ msgstr "Right Manga Save"
-
-#~ msgctxt "keys_files"
-#~ msgid "Right Nudge"
-#~ msgstr "Right Nudge"
 
 #~ msgctxt "game_options"
 #~ msgid "Rotate"
@@ -18526,25 +18467,9 @@ msgstr "жёлтая/синяя"
 #~ msgid "SSAA"
 #~ msgstr "SSAA"
 
-#~ msgctxt "keys_files"
-#~ msgid "Save State"
-#~ msgstr "Сохранение"
-
-#~ msgctxt "keys_files"
-#~ msgid "Save State Slot 1"
-#~ msgstr "Сохранение в Слот 1"
-
 #~ msgctxt "game_options"
 #~ msgid "Scale"
 #~ msgstr "Масштаб"
-
-#~ msgctxt "keys_files"
-#~ msgid "Service menu"
-#~ msgstr "Сервисное меню"
-
-#~ msgctxt "game_options"
-#~ msgid "Set desired framerate."
-#~ msgstr "Установить желаемую частоту кадров."
 
 #~ msgctxt "game_options"
 #~ msgid ""
@@ -18568,10 +18493,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "Set vsync on to avoid tearing."
 #~ msgstr "Включите vsync, чтобы избежать разрывов."
-
-#~ msgctxt "keys_files"
-#~ msgid "Settings GUI"
-#~ msgstr "Настройки GUI"
 
 #~ msgctxt "game_options"
 #~ msgid "Show crosshairs in game"
@@ -18609,14 +18530,6 @@ msgstr "жёлтая/синяя"
 #~ msgid "Skip drawing screen effects. Cumulative."
 #~ msgstr "Пропускает отрисовку экранных эффектов. Кумулятивный."
 
-#~ msgctxt "keys_files"
-#~ msgid "Slot +"
-#~ msgstr "Слот +"
-
-#~ msgctxt "keys_files"
-#~ msgid "Slot -"
-#~ msgstr "Слот -"
-
 #~ msgctxt "game_options"
 #~ msgid "Smooth pixels."
 #~ msgstr "Гладкие пиксели."
@@ -18636,10 +18549,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "Standard (Default)"
 #~ msgstr "Стандарт (по умолчанию)"
-
-#~ msgctxt "keys_files"
-#~ msgid "Start"
-#~ msgstr "Старт"
 
 #~ msgctxt "game_options"
 #~ msgid ""
@@ -18676,10 +18585,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "TV MODE"
 #~ msgstr "ТВ РЕЖИМ"
-
-#~ msgctxt "keys_files"
-#~ msgid "Take a screenshot"
-#~ msgstr "Сделать скриншот"
 
 #~ msgctxt "game_options"
 #~ msgid "Target color for player 1."
@@ -18816,10 +18721,6 @@ msgstr "жёлтая/синяя"
 #~ msgid "X360 Orientation"
 #~ msgstr "X360 ориентация"
 
-#~ msgctxt "keys_files"
-#~ msgid "exit game"
-#~ msgstr "выйти из игры"
-
 #~ msgctxt "game_options"
 #~ msgid "fullspeed"
 #~ msgstr "полная скорость"
@@ -18851,26 +18752,6 @@ msgstr "жёлтая/синяя"
 #~ msgctxt "game_options"
 #~ msgid "on"
 #~ msgstr "вкл"
-
-#~ msgctxt "keys_files"
-#~ msgid "quick load"
-#~ msgstr "быстрая загрузка"
-
-#~ msgctxt "keys_files"
-#~ msgid "quick save"
-#~ msgstr "быстрое сохранение"
-
-#~ msgctxt "keys_files"
-#~ msgid "quickload"
-#~ msgstr "быстрая загрузка"
-
-#~ msgctxt "keys_files"
-#~ msgid "quicksave"
-#~ msgstr "быстрое сохранение"
-
-#~ msgctxt "keys_files"
-#~ msgid "screenshot"
-#~ msgstr "скриншот"
 
 #~ msgctxt "game_options"
 #~ msgid "xBR (no edge blending)"
