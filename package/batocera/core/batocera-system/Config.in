@@ -103,7 +103,7 @@ if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY		|| \
 endif
 
 config BR2_PACKAGE_BATOCERA_CORES_STILL_COMMERCIALIZED
-	bool "batocera is limited to abandoned systems"
+	bool "ProjectArcade OS is limited to abandoned systems"
 
 
 ##########################################
@@ -171,7 +171,7 @@ config BR2_PACKAGE_BATOCERA_SYSTEM
 	select BR2_PACKAGE_BATOCERA_BATTERY_CHECKER	if BR2_PACKAGE_XOSD
 	select BR2_PACKAGE_HOTKEYGEN
 	select BR2_PACKAGE_CIFS_UTILS			# required for boot mounts
-	select BR2_PACKAGE_BATOCERA_IMAGE		# tools to generate batocera image
+	select BR2_PACKAGE_BATOCERA_IMAGE		# tools to generate ProjectArcade OS image
 	select BR2_TARGET_ROOTFS_SQUASHFS		# tool to generate the target image
 	select BR2_PACKAGE_SQUASHFS_XZ			# some squashfs options
 	select BR2_PACKAGE_SQUASHFS_ZSTD		# some squashfs options
@@ -239,14 +239,14 @@ config BR2_PACKAGE_BATOCERA_SYSTEM
 	select BR2_PACKAGE_USBMOUNT				# usb key/sd card mounter
 	select BR2_PACKAGE_USBUTILS				# usb key/sd card tools
 	select BR2_PACKAGE_BATOCERA_SPLASH			# boot splash
-	select BR2_PACKAGE_BATOCERA_SCRIPTS			# batocera scripts
-	select BR2_PACKAGE_BATOCERA_RESOLUTION			# batocera resolution
-	select BR2_PACKAGE_BATOCERA_SETTINGS			# batocera-settings-get/set
-	select BR2_PACKAGE_BATOCERA_AUDIO			if !BR2_PACKAGE_BATOCERA_AUDIO_ALSA # batocera audio-pipewire
-	select BR2_PACKAGE_BATOCERA_AUDIO_ALSA			if BR2_PACKAGE_BATOCERA_TARGET_BCM2835 # batocera audio-alsa
-	select BR2_PACKAGE_BATOCERA_BLUETOOTH			# batocera bluetooth
+	select BR2_PACKAGE_BATOCERA_SCRIPTS			# ProjectArcade OS scripts
+	select BR2_PACKAGE_BATOCERA_RESOLUTION			# ProjectArcade OS resolution
+	select BR2_PACKAGE_BATOCERA_SETTINGS			# ProjectArcade OS-settings-get/set
+	select BR2_PACKAGE_BATOCERA_AUDIO			if !BR2_PACKAGE_BATOCERA_AUDIO_ALSA # ProjectArcade OS audio-pipewire
+	select BR2_PACKAGE_BATOCERA_AUDIO_ALSA			if BR2_PACKAGE_BATOCERA_TARGET_BCM2835 # ProjectArcade OS audio-alsa
+	select BR2_PACKAGE_BATOCERA_BLUETOOTH			# ProjectArcade OS bluetooth
 	select BR2_PACKAGE_BATOCERA_NOTICE			# boot pdf notice
-	select BR2_PACKAGE_BATOCERA_TEST			# batocera test script
+	select BR2_PACKAGE_BATOCERA_TEST			# ProjectArcade OS test script
 	select BR2_PACKAGE_WGET					# download tools
 	select BR2_PACKAGE_LIBCURL_CURL				# download tools
 	select BR2_PACKAGE_NGHTTP2				# required for curl http2
@@ -267,7 +267,7 @@ config BR2_PACKAGE_BATOCERA_SYSTEM
 	select BR2_SYSTEM_ENABLE_NLS				# locales
 	select BR2_PACKAGE_ACPID				if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY
 	select BR2_PACKAGE_AVAHI				# service discovery on local network
-	select BR2_PACKAGE_AVAHI_DAEMON				# ping batocera.local
+	select BR2_PACKAGE_AVAHI_DAEMON				# ping ProjectArcade.local
 	select BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY		# bonjour
 	select BR2_PACKAGE_NSS_MDNS				# bonjour
 	select BR2_PACKAGE_WSDD					# service discovery on local network (windows network neighborhood)
@@ -286,7 +286,7 @@ config BR2_PACKAGE_BATOCERA_SYSTEM
 	select BR2_PACKAGE_FLATPAK				if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY # flatpak app packaging system
 	select BR2_PACKAGE_BAUH					if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY # flatpak gui
 	select BR2_PACKAGE_RYZENADJ				if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY # ryzen apu configuration
-	select BR2_PACKAGE_SYNCTHING				# sync files across multiple batoceras
+	select BR2_PACKAGE_SYNCTHING				# sync files across multiple ProjectArcade OSes
 	select BR2_PACKAGE_RCLONE				if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY # sync files in the cloud (require x86_64)
 	select BR2_PACKAGE_BTOP					# htop alternative
 	select BR2_PACKAGE_MOKUTIL				if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY # mokutil machine owner key utility
@@ -307,7 +307,6 @@ config BR2_PACKAGE_BATOCERA_SYSTEM
 	select BR2_PACKAGE_HID_T150             if !BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_4 # Thrustmaster T150 and TMX Force Feedback Wheel Linux drivers
 	select BR2_PACKAGE_HID_NX				if !BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_4 && !BR2_PACKAGE_BATOCERA_TARGET_BCM2835 && !BR2_PACKAGE_BATOCERA_TARGET_RK3326 # updated nintendo switch controller driver, requires kernel > 4.4
 	select BR2_PACKAGE_JOYCOND				if BR2_PACKAGE_HID_NX # nintendo switch joycon daemon (requires hid-nx)
-	select BR2_PACKAGE_JAMMASD
 	select BR2_PACKAGE_KEYBOARDTOPADS
 	select BR2_PACKAGE_NSO_N64
 
@@ -460,7 +459,6 @@ config BR2_PACKAGE_BATOCERA_SYSTEM
 
 	# joy 2 pad
 	select BR2_PACKAGE_EVMAPY
-	select BR2_PACKAGE_EVMAPY_SYSTEM_CONFIG
 
 	# FUN R1 Gamepad
 	select BR2_PACKAGE_FUN_R1_GAMEPAD	if BR2_PACKAGE_BATOCERA_TARGET_S905
@@ -669,7 +667,7 @@ config BR2_PACKAGE_BATOCERA_EXTRAS
 	bool "ProjectArcade OS tools packages selection"
 
 	help
-	  Tools to extends the batocera system (but not required)
+	  Tools to extends the ProjectArcade OS system (but not required)
 
 config BR2_PACKAGE_BATOCERA_TOOLS
 	bool "ProjectArcade OS system tools packages selection"
@@ -1049,8 +1047,11 @@ config BR2_PACKAGE_BATOCERA_PORTS_SYSTEMS
 	# Boom3 (Doom 3)
 	select BR2_PACKAGE_LIBRETRO_BOOM3		if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY # Requires RA with OpenGL
 
-	# OpenLara (Tomb Raider)
-	select BR2_PACKAGE_LIBRETRO_OPENLARA		if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
+	# Tomb Raider 1
+	select BR2_PACKAGE_TR1X		            if BR2_PACKAGE_XORG7
+
+	# Tomb Raider 2
+	select BR2_PACKAGE_TR2X		            if BR2_PACKAGE_XORG7
 
 	# Quake 3
 	select BR2_PACKAGE_IOQUAKE3    if !BR2_PACKAGE_BATOCERA_TARGET_BCM2835 && \
@@ -1305,8 +1306,7 @@ config BR2_PACKAGE_BATOCERA_CONSOLE_SYSTEMS
 	# Wii U
 	select BR2_PACKAGE_CEMU				if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
 
-	# future pinball
-	select BR2_PACKAGE_FPINBALL			if BR2_PACKAGE_BATOCERA_WINE
+	# Pinball
 	select BR2_PACKAGE_VPINBALL			if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY || BR2_PACKAGE_BATOCERA_TARGET_RK3588
 
 	# Panasonic 3DO
@@ -1558,7 +1558,7 @@ config BR2_PACKAGE_BATOCERA_CORES_EXPERIMENTAL
 	  Emulators under development (Experimental)
 
 config BR2_PACKAGE_BATOCERA_GUNS
-	bool "batocera guns support"
+	bool "ProjectArcade OS guns support"
 	select BR2_PACKAGE_AIMTRAK_GUNS				# AimTrack light gun
 	select BR2_PACKAGE_SAMCO_GUNS				# SAMCO light gun
 	select BR2_PACKAGE_FUSION_LIGHTGUNS			# Fusion Lightgun
@@ -1620,7 +1620,7 @@ config BR2_PACKAGE_BATOCERA_KODI21
 	select BR2_PACKAGE_KODI_VFS_RAR
 	select BR2_PACKAGE_KODI_VFS_LIBARCHIVE
 
-	# default kodi packages for batocera
+	# default kodi packages for ProjectArcade OS
 	select BR2_PACKAGE_KODI_MYSQL
 	select BR2_PACKAGE_KODI_ALSA_LIB
 	select BR2_PACKAGE_KODI_AVAHI
@@ -1760,17 +1760,22 @@ config BR2_PACKAGE_BATOCERA_QT6
 	select BR2_PACKAGE_QT6BASE_SQL
 	select BR2_PACKAGE_QT6BASE_MYSQL
 	select BR2_PACKAGE_QT6BASE_TEST
-	select BR2_PACKAGE_QT6BASE_VULKAN    if BR2_PACKAGE_BATOCERA_VULKAN
+	select BR2_PACKAGE_QT6BASE_VULKAN           if BR2_PACKAGE_BATOCERA_VULKAN
 	select BR2_PACKAGE_QT6BASE_WIDGETS
 	select BR2_PACKAGE_QT6BASE_XML
-	select BR2_PACKAGE_QT6BASE_OPENGL		if BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_QT6BASE_OPENGL		    if BR2_PACKAGE_HAS_LIBGL
 	select BR2_PACKAGE_QT6BASE_OPENGL_DESKTOP	if BR2_PACKAGE_HAS_LIBGL
 	select BR2_PACKAGE_QT6BASE_OPENGL_ES2		if BR2_PACKAGE_HAS_LIBGLES
-	select BR2_PACKAGE_QT6BASE_EGLFS		if BR2_PACKAGE_HAS_LIBEGL
-	select BR2_PACKAGE_QT6BASE_XCB			if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_QT6BASE_EGLFS		    if BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_QT6BASE_XCB			    if BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_QT6DECLARATIVE
 	select BR2_PACKAGE_QT6DECLARATIVE_QUICK
 	select BR2_PACKAGE_QT6MULTIMEDIA
+	#select BR2_PACKAGE_QT6MULTIMEDIA_ALSA
+	select BR2_PACKAGE_QT6MULTIMEDIA_FFMPEG
+	select BR2_PACKAGE_QT6MULTIMEDIA_GSTREAMER
+	select BR2_PACKAGE_QT6MULTIMEDIA_PULSEAUDIO
+	select BR2_PACKAGE_QT6MULTIMEDIA_VAAPI    if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
 	select BR2_PACKAGE_QT6SHADERTOOLS
 	select BR2_PACKAGE_QT6SVG
 	select BR2_PACKAGE_QT6TOOLS
@@ -1815,7 +1820,6 @@ config BR2_PACKAGE_BATOCERA_PANFROST_MESA3D
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_PANFROST
 	select BR2_PACKAGE_MESA3D_OPENGL_GLX    if BR2_PACKAGE_XORG7 # OpenGL GLX support
 	select BR2_PACKAGE_MESA3D_DEMOS			if BR2_PACKAGE_XORG7 # glxinfo etc
-	select BR2_PACKAGE_LIBGLVND			    if BR2_PACKAGE_XORG7 # opengl vendor neutral dispatch
 
 config BR2_PACKAGE_BATOCERA_MALI_G610
 	bool "ProjectArcade OS driver mesa MALI"
@@ -1929,7 +1933,7 @@ config BR2_PACKAGE_BATOCERA_XWAYLAND
 	select BR2_PACKAGE_WLROOTS_XWAYLAND
 
 	# Xorg apps
-	select BR2_PACKAGE_BATOCERA_DESKTOPAPPS		# batocera applications config and scripts
+	select BR2_PACKAGE_BATOCERA_DESKTOPAPPS		# ProjectArcade OS applications config and scripts
 	select BR2_PACKAGE_LIBGTK3			# gtk3 library
 	select BR2_PACKAGE_L3AFPAD			# gtk3 text editor
 	select BR2_PACKAGE_PCMANFM			# file manager
@@ -1973,7 +1977,7 @@ config BR2_PACKAGE_BATOCERA_XORG
 	select BR2_PACKAGE_XAPP_XSET			# X11 Xset command
 	select BR2_PACKAGE_XAPP_XBACKLIGHT		# set the backlight
 
-	select BR2_PACKAGE_BATOCERA_DESKTOPAPPS		# batocera applications config and scripts
+	select BR2_PACKAGE_BATOCERA_DESKTOPAPPS		# ProjectArcade OS applications config and scripts
 	select BR2_PACKAGE_LIBGTK3			# gtk3 library
 	select BR2_PACKAGE_L3AFPAD			# gtk3 text editor
 	select BR2_PACKAGE_PCMANFM			# file manager
@@ -1994,17 +1998,17 @@ config BR2_PACKAGE_BATOCERA_GPU_X86
 
 	# mesa
 	select BR2_PACKAGE_MESA3D
-	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_I915		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY	#batocera- Intel legacy
-	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_CROCUS		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY	#batocera- Intel Gen4-7
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_I915		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY	#ProjectArcade OS- Intel legacy
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_CROCUS		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY	#ProjectArcade OS- Intel Gen4-7
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SWRAST
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SVGA
-	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_IRIS		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY	#batocera- Intel Gen8+
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_IRIS		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY	#ProjectArcade OS- Intel Gen8+
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU	if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_R600		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_RADEONSI	if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VIRGL		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_R300		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY
-	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_ZINK		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY	#batocera- possible other platforms
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_ZINK		if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY	#ProjectArcade OS- possible other platforms
 	select BR2_PACKAGE_MESA3D_VDPAU				if BR2_PACKAGE_BATOCERA_TARGET_X86_ANY
 	select BR2_PACKAGE_MESA3D_OPENGL_ES
 	select BR2_PACKAGE_MESA3D_OPENGL_EGL
